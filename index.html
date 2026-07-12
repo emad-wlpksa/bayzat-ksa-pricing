@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bayzat KSA — Smart Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --purple:#9647FF; --dark-purple:#4A378B; --cherry:#CD2873;
@@ -11,33 +14,40 @@
     --bg:#161616; --card:#1F1F1F; --card2:#262626; --line:#333;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--bg);color:#fff;font-family:Arial,Helvetica,sans-serif;line-height:1.3}
+  body,button,input,select,textarea{font-family:'Cairo',Arial,Helvetica,sans-serif}
+  body{background:var(--bg);color:#fff;line-height:1.3}
   h1,h2,h3,.hd{font-weight:bold;text-transform:uppercase;letter-spacing:0}
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
   header{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}
   .logo{font-size:26px;font-weight:900;letter-spacing:2px;color:#fff}
   .logo b{color:var(--purple)}
-  .ksa-badge{background:var(--purple);color:#fff;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:999px;margin-left:10px;vertical-align:middle;letter-spacing:1px}
+  .ksa-badge{background:var(--purple);color:#fff;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:999px;margin-inline-start:10px;vertical-align:middle;letter-spacing:1px}
+  .hdr-btns{display:flex;gap:10px}
   .gear{background:none;border:1px solid var(--g4);color:var(--g1);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:13px}
   .gear:hover{border-color:var(--purple);color:#fff}
+  .lang-btn{background:var(--card2);border:1px solid var(--purple);color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:13px;font-weight:bold}
 
   .hero{position:relative;padding:60px 0 40px;overflow:hidden}
-  .hero h1{font-size:52px;line-height:1;max-width:760px}
+  .hero h1{font-size:52px;line-height:1.05;max-width:760px}
+  [dir=rtl] .hero h1{line-height:1.25}
   .hero h1 span{color:var(--purple)}
   .hero p{color:var(--g1);font-size:18px;margin-top:18px;max-width:560px}
   .shape{position:absolute;opacity:.9}
+  [dir=rtl] .shape.s1{right:auto!important;left:-30px}
+  [dir=rtl] .shape.s2{right:auto!important;left:150px}
 
   .products{display:flex;gap:14px;justify-content:center;padding:26px 0 4px;flex-wrap:wrap}
-  .prod{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px 26px;cursor:pointer;text-align:left;min-width:250px;color:#fff}
+  .prod{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px 26px;cursor:pointer;text-align:start;min-width:250px;color:#fff}
   .prod h4{font-size:16px;text-transform:uppercase}
   .prod p{color:var(--g2);font-size:12.5px;margin-top:3px}
-  .prod .tick{float:right;width:22px;height:22px;border-radius:6px;border:2px solid var(--g4);margin-left:14px;text-align:center;line-height:19px;font-weight:bold;font-size:14px;color:transparent}
+  .prod .tick{float:inline-end;width:22px;height:22px;border-radius:6px;border:2px solid var(--g4);margin-inline-start:14px;text-align:center;line-height:19px;font-weight:bold;font-size:14px;color:transparent}
   .prod.on{border-color:var(--purple)}
   .prod.on .tick{background:var(--purple);border-color:var(--purple);color:#fff}
 
   .emp{padding:26px 0 8px;display:flex;gap:26px;justify-content:center;flex-wrap:wrap;text-align:center}
   .inp label{display:block;font-size:12px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:var(--g1);margin-bottom:10px}
+  [dir=rtl] .inp label{letter-spacing:0}
   .inp input{background:var(--card);border:2px solid var(--purple);color:#fff;font-size:26px;font-weight:bold;text-align:center;width:190px;padding:10px;border-radius:12px;outline:none}
   .inp .note{margin-top:8px;color:var(--g3);font-size:12px;min-height:15px}
 
@@ -52,31 +62,37 @@
   .card:hover{border-color:var(--g4)}
   .card.selected{border:2px solid var(--purple);transform:translateY(-3px)}
   .tag{display:inline-block;font-size:11px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2);background:var(--card2);padding:4px 10px;border-radius:999px;margin-bottom:12px}
+  [dir=rtl] .tag{letter-spacing:0}
   .card h3{font-size:21px;margin-bottom:10px}
   .price{font-size:32px;font-weight:900;margin:6px 0 2px}
   .price small{font-size:13px;font-weight:normal;color:var(--g2)}
   .sub-price{color:var(--g2);font-size:13px;margin-bottom:14px;min-height:17px}
   .btn{display:block;width:100%;text-align:center;background:var(--purple);color:#fff;font-weight:bold;text-transform:uppercase;letter-spacing:1px;font-size:13px;border:none;border-radius:10px;padding:13px;cursor:pointer;margin:10px 0 16px}
+  [dir=rtl] .btn{letter-spacing:0}
   .btn.ghost{background:var(--card2);color:var(--g1)}
   .btn:hover{filter:brightness(1.1)}
   .btn:disabled{background:var(--card2);color:var(--g4);cursor:not-allowed}
   ul.feats{list-style:none}
-  ul.feats li{padding:7px 0 7px 24px;position:relative;color:var(--g1);font-size:13.5px;border-top:1px solid #2b2b2b}
-  ul.feats li:before{content:"";position:absolute;left:0;top:11px;width:10px;height:10px;background:var(--purple);clip-path:polygon(0 3px,3px 0,10px 0,10px 7px,7px 10px,0 10px)}
+  ul.feats li{padding:7px 0;padding-inline-start:24px;position:relative;color:var(--g1);font-size:13.5px;border-top:1px solid #2b2b2b}
+  ul.feats li:before{content:"";position:absolute;inset-inline-start:0;top:11px;width:10px;height:10px;background:var(--purple);clip-path:polygon(0 3px,3px 0,10px 0,10px 7px,7px 10px,0 10px)}
   .pop{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--cherry);font-size:11px;font-weight:bold;letter-spacing:1px;padding:4px 14px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+  [dir=rtl] .pop{letter-spacing:0}
 
   details.compare{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
   details.compare summary{cursor:pointer;padding:16px 22px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--g1)}
+  [dir=rtl] details.compare summary{letter-spacing:0}
   table.cmp{width:100%;border-collapse:collapse;font-size:13px}
   table.cmp th, table.cmp td{padding:9px 14px;text-align:center;border-top:1px solid #2b2b2b}
-  table.cmp td:first-child{text-align:left;color:var(--g1)}
+  table.cmp td:first-child{text-align:start;color:var(--g1)}
   table.cmp tr.cat td{background:var(--card2);font-weight:bold;text-transform:uppercase;letter-spacing:1px;font-size:11px;color:var(--g2)}
+  [dir=rtl] table.cmp tr.cat td{letter-spacing:0}
   .yes{color:var(--purple);font-weight:bold}
   .no{color:var(--g4)}
 
   .calc{background:linear-gradient(135deg,#1c1430,#161616 60%);border:1px solid var(--dark-purple);border-radius:20px;padding:34px}
   .chips{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 6px;align-items:center}
   .chips .lbl{width:130px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--g2);font-weight:bold}
+  [dir=rtl] .chips .lbl{letter-spacing:0}
   .chip{background:var(--card2);border:1px solid var(--g4);color:var(--g1);border-radius:999px;padding:9px 20px;font-size:14px;font-weight:bold;cursor:pointer}
   .chip.on{background:var(--purple);border-color:var(--purple);color:#fff}
   .chip.on.alt{background:var(--cherry);border-color:var(--cherry)}
@@ -90,14 +106,17 @@
   .row b{color:#fff;white-space:nowrap}
   .row.total{font-size:15px;border-top:2px solid var(--purple)}
   .row.subhead{border-top:none;color:var(--purple);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:bold;padding-top:12px}
-  .row .strike{text-decoration:line-through;color:var(--g4);margin-right:6px;font-size:12px}
+  [dir=rtl] .row.subhead{letter-spacing:0}
+  .row .strike{text-decoration:line-through;color:var(--g4);margin-inline-end:6px;font-size:12px}
   .save{margin-top:12px;background:rgba(150,71,255,.14);border:1px dashed var(--purple);border-radius:10px;padding:9px;text-align:center;font-size:13px;font-weight:bold;color:var(--purple)}
-  .bestpop{position:absolute;top:-12px;right:16px;background:var(--purple);font-size:11px;font-weight:bold;letter-spacing:1px;padding:4px 12px;border-radius:999px;text-transform:uppercase}
+  .bestpop{position:absolute;top:-12px;inset-inline-end:16px;background:var(--purple);font-size:11px;font-weight:bold;letter-spacing:1px;padding:4px 12px;border-radius:999px;text-transform:uppercase}
+  [dir=rtl] .bestpop{letter-spacing:0}
 
   /* proposal builder */
   .prop{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:34px;margin-top:26px}
   .prop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:20px}
   .field label{display:block;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--g1);font-weight:bold;margin-bottom:9px}
+  [dir=rtl] .field label{letter-spacing:0}
   .field input[type=text]{width:100%;background:var(--card2);border:1px solid var(--g4);color:#fff;font-size:16px;padding:12px;border-radius:10px;outline:none}
   .field input[type=text]:focus{border-color:var(--purple)}
   .field select,.field input[type=date]{width:100%;background:var(--card2);border:1px solid var(--g4);color:#fff;font-size:16px;padding:12px;border-radius:10px;outline:none;color-scheme:dark}
@@ -121,6 +140,7 @@
   .modal p{color:var(--g2);font-size:13px;margin-bottom:18px}
   .set-grid{display:grid;grid-template-columns:1fr 90px 90px;gap:10px 14px;align-items:center;margin-bottom:8px}
   .set-grid .head{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2);font-weight:bold;text-align:center}
+  [dir=rtl] .set-grid .head{letter-spacing:0}
   .set-grid label{font-size:14px;color:var(--g1);font-weight:bold}
   .set-grid input{background:var(--card2);border:1px solid var(--g4);color:#fff;font-size:15px;font-weight:bold;width:90px;text-align:center;padding:8px;border-radius:8px}
   .modal .btn{margin-top:14px}
@@ -136,79 +156,82 @@
 <div class="wrap">
   <header>
     <div><span class="logo">BAY<b>Z</b>AT</span><span class="ksa-badge">KSA</span></div>
-    <button class="gear" onclick="openSettings()">&#9881; Admin settings</button>
+    <div class="hdr-btns">
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">عربي</button>
+      <button class="gear" id="gearBtn" onclick="openSettings()">&#9881; Admin settings</button>
+    </div>
   </header>
 
   <div class="hero">
-    <svg class="shape" style="right:-30px;top:20px;width:220px" viewBox="0 0 100 100"><path d="M0 100 L0 75 L25 75 L25 50 L50 50 L50 25 L75 25 L75 0 L100 0 L100 100 Z" fill="none" stroke="#9647FF" stroke-width="1.2"/></svg>
-    <svg class="shape" style="right:150px;top:150px;width:120px" viewBox="0 0 100 60"><path d="M0 0 Q50 60 100 0 L100 20 Q50 80 0 20 Z" fill="#9647FF"/></svg>
-    <h1>Pricing that <span>makes it</span> in Saudi.</h1>
-    <p>HR, payroll and hiring on one platform. Pick your products, pick your support, see exactly what you'll pay. No surprises — that's the point.</p>
+    <svg class="shape s1" style="right:-30px;top:20px;width:220px" viewBox="0 0 100 100"><path d="M0 100 L0 75 L25 75 L25 50 L50 50 L50 25 L75 25 L75 0 L100 0 L100 100 Z" fill="none" stroke="#9647FF" stroke-width="1.2"/></svg>
+    <svg class="shape s2" style="right:150px;top:150px;width:120px" viewBox="0 0 100 60"><path d="M0 0 Q50 60 100 0 L100 20 Q50 80 0 20 Z" fill="#9647FF"/></svg>
+    <h1 id="heroTitle">Pricing that <span>makes it</span> in Saudi.</h1>
+    <p id="heroSub">HR, payroll and hiring on one platform. Pick your products, pick your support, see exactly what you'll pay. No surprises — that's the point.</p>
   </div>
 
   <div class="products" id="prodSel">
     <button class="prod" id="prodHrms" onclick="toggleProduct('hrms')">
-      <span class="tick">✓</span><h4>HRMS Platform</h4><p>HR, payroll, time off, Muqeem &amp; Mudad</p>
+      <span class="tick">✓</span><h4 id="hrmsProdName">HRMS Platform</h4><p id="hrmsProdDesc">HR, payroll, time off, Muqeem &amp; Mudad</p>
     </button>
     <button class="prod" id="prodAts" onclick="toggleProduct('ats')">
-      <span class="tick">✓</span><h4>ATS — Talent Acquisition</h4><p>Jobs, candidates, AI screening &amp; offers</p>
+      <span class="tick">✓</span><h4 id="atsProdName">ATS — Talent Acquisition</h4><p id="atsProdDesc">Jobs, candidates, AI screening &amp; offers</p>
     </button>
   </div>
 
   <div class="emp">
     <div class="inp">
-      <label>Total employees</label>
+      <label id="lblEmp">Total employees</label>
       <input type="number" id="empCount" value="40" min="1" oninput="render()">
       <div class="note" id="bandNote"></div>
     </div>
     <div class="inp ats-only">
-      <label>% white collar</label>
+      <label id="lblWc">% white collar</label>
       <input type="number" id="wcPct" value="30" min="0" max="100" oninput="render()">
       <div class="note" id="wcNote"></div>
     </div>
     <div class="inp ats-only">
-      <label>Recruiters / HR in hiring</label>
+      <label id="lblRec">Recruiters / HR in hiring</label>
       <input type="number" id="recruiters" value="3" min="0" oninput="render()">
       <div class="note" id="recNote"></div>
     </div>
   </div>
 
   <section id="bundles" class="hrms-only">
-    <h2 class="sec-title"><em>HRMS</em> — choose your bundle</h2>
-    <p class="sec-sub">All prices in SAR, excluding VAT.</p>
+    <h2 class="sec-title" id="bundlesTitle"><em>HRMS</em> — choose your bundle</h2>
+    <p class="sec-sub" id="bundlesSub">All prices in SAR, excluding VAT.</p>
     <div class="grid3" id="bundleCards"></div>
     <details class="compare">
-      <summary>Compare every HRMS feature</summary>
+      <summary id="cmpSummary">Compare every HRMS feature</summary>
       <table class="cmp" id="cmpTable"></table>
     </details>
   </section>
 
   <section id="packages" class="hrms-only">
-    <h2 class="sec-title"><em>HRMS</em> — service &amp; support packages</h2>
-    <p class="sec-sub">Support that scales with you — priced for your team size, billed yearly.</p>
+    <h2 class="sec-title" id="pkgsTitle"><em>HRMS</em> — service &amp; support packages</h2>
+    <p class="sec-sub" id="pkgsSub">Support that scales with you — priced for your team size, billed yearly.</p>
     <div class="grid3" id="pkgCards"></div>
   </section>
 
   <section id="atsBundles" class="ats-only">
-    <h2 class="sec-title"><em>ATS</em> — choose your bundle</h2>
-    <p class="sec-sub">Priced by workforce profile. All prices in SAR/year, excluding VAT.</p>
+    <h2 class="sec-title" id="atsBundlesTitle"><em>ATS</em> — choose your bundle</h2>
+    <p class="sec-sub" id="atsBundlesSub">Priced by workforce profile. All prices in SAR/year, excluding VAT.</p>
     <div class="grid3" id="atsBundleCards"></div>
     <details class="compare">
-      <summary>Compare every ATS feature</summary>
+      <summary id="atsCmpSummary">Compare every ATS feature</summary>
       <table class="cmp" id="atsCmpTable"></table>
     </details>
   </section>
 
   <section id="atsPackages" class="ats-only">
-    <h2 class="sec-title"><em>ATS</em> — onboarding &amp; success packages</h2>
-    <p class="sec-sub">Two options. Billed yearly, multi-year discounts apply.</p>
+    <h2 class="sec-title" id="atsPkgsTitle"><em>ATS</em> — onboarding &amp; success packages</h2>
+    <p class="sec-sub" id="atsPkgsSub">Two options. Billed yearly, multi-year discounts apply.</p>
     <div class="grid2" id="atsPkgCards"></div>
   </section>
 
   <section id="calculator">
     <div class="calc">
-      <h2 class="sec-title">The no-brainer calculator</h2>
-      <p class="sec-sub">One, two or three years — side by side. Commit longer, pay less.</p>
+      <h2 class="sec-title" id="calcTitle">The no-brainer calculator</h2>
+      <p class="sec-sub" id="calcSub">One, two or three years — side by side. Commit longer, pay less.</p>
 
       <div class="chips" id="calcProdChips"><span class="lbl">Products</span></div>
       <div class="chips hrms-only" id="bundleChips"><span class="lbl">HRMS bundle</span></div>
@@ -221,35 +244,35 @@
 
     <!-- PROPOSAL BUILDER -->
     <div class="prop" id="proposal">
-      <h2 class="sec-title">Build the proposal</h2>
-      <p class="sec-sub">Uses the selections above. Downloads a .pptx that opens directly in Google Slides for editing.</p>
+      <h2 class="sec-title" id="propTitle">Build the proposal</h2>
+      <p class="sec-sub" id="propSub">Uses the selections above. Downloads a .pptx that opens directly in Google Slides for editing.</p>
       <div class="prop-grid">
         <div class="field">
-          <label>Client / company name</label>
+          <label id="lblClient">Client / company name</label>
           <input type="text" id="clientName" placeholder="e.g. Forbes Middle East" oninput="renderProp()">
         </div>
         <div class="field">
-          <label>Contract options to include</label>
+          <label id="lblYears">Contract options to include</label>
           <div class="checks" id="yearChecks"></div>
         </div>
         <div class="field">
-          <label>Proposal language</label>
+          <label id="lblLang">Proposal language</label>
           <div class="langs" id="langChips"></div>
         </div>
         <div class="field">
-          <label>Offer valid until</label>
+          <label id="lblValid">Offer valid until</label>
           <input type="date" id="validUntil" onchange="renderProp()">
         </div>
         <div class="field">
-          <label>Payment terms</label>
+          <label id="lblPay">Payment terms</label>
           <select id="payTerms" onchange="renderProp()"></select>
         </div>
         <div class="field">
-          <label>Sent by</label>
+          <label id="lblRep">Sent by</label>
           <select id="repSelect" onchange="renderProp()"></select>
         </div>
         <div class="field">
-          <label>Client logo (first page)</label>
+          <label id="lblLogo">Client logo (first page)</label>
           <div class="logo-drop" id="logoDrop" onclick="document.getElementById('logoFile').click()">
             <span id="logoHint">Click to attach the client's logo (PNG / JPG)</span>
           </div>
@@ -261,7 +284,7 @@
     </div>
   </section>
 
-  <footer>
+  <footer id="footerText">
     Bayzat KSA pricing — Q1 2026 rate charts (HRMS &amp; ATS). Billed annually in SAR, excluding VAT.
     HRMS service packages replace one-time implementation fees; ATS onboarding packages billed yearly. AI CV credits &amp; note-taking beyond included allowance are usage-based
     (SAR 2,000 / 10,000 CVs · SAR 1,600 / 100 hrs). Multi-year discounts apply to bundles and packages and are configurable in admin settings.
@@ -270,16 +293,16 @@
 
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeSettings()">
   <div class="modal">
-    <h3>Admin settings</h3>
-    <p>Contract-length discounts (%). Applied to bundles and service packages of each product in the calculator and proposals.</p>
+    <h3 id="modalTitle">Admin settings</h3>
+    <p id="modalDesc">Contract-length discounts (%). Applied to bundles and service packages of each product in the calculator and proposals.</p>
     <div class="set-grid">
-      <span></span><span class="head">HRMS</span><span class="head">ATS</span>
-      <label>1 year</label><input type="number" id="h1" min="0" max="100" step="0.5"><input type="number" id="a1" min="0" max="100" step="0.5">
-      <label>2 years</label><input type="number" id="h2" min="0" max="100" step="0.5"><input type="number" id="a2" min="0" max="100" step="0.5">
-      <label>3 years</label><input type="number" id="h3" min="0" max="100" step="0.5"><input type="number" id="a3" min="0" max="100" step="0.5">
+      <span></span><span class="head" id="headHrms">HRMS</span><span class="head" id="headAts">ATS</span>
+      <label id="lblY1">1 year</label><input type="number" id="h1" min="0" max="100" step="0.5"><input type="number" id="a1" min="0" max="100" step="0.5">
+      <label id="lblY2">2 years</label><input type="number" id="h2" min="0" max="100" step="0.5"><input type="number" id="a2" min="0" max="100" step="0.5">
+      <label id="lblY3">3 years</label><input type="number" id="h3" min="0" max="100" step="0.5"><input type="number" id="a3" min="0" max="100" step="0.5">
     </div>
-    <button class="btn" onclick="saveSettings()">Save</button>
-    <button class="reset" onclick="resetSettings()">Reset to defaults (HRMS 0/5/10 · ATS 0/10/20)</button>
+    <button class="btn" id="saveBtn" onclick="saveSettings()">Save</button>
+    <button class="reset" id="resetBtn" onclick="resetSettings()">Reset to defaults (HRMS 0/5/10 · ATS 0/10/20)</button>
   </div>
 </div>
 
@@ -307,24 +330,24 @@ const PKG_PRICES = [
   [6500, 15800, 22500],[7500, 17200, 24400],[7800, 17700, 25200],[7700, 17600, 25000],
 ];
 const BUNDLES = [
-  {id:"essential", tag:"Core HR", name:"Essential", nameAr:"الباقة الأساسية",
+  {id:"essential", tag:"Core HR", tagAr:"الأساسيات", name:"Essential", nameAr:"الباقة الأساسية",
    feats:["Employee self service","Time off & attendance","Payroll & WPS (Mudad)","Task management","Work & loan requests","AI reports"],
    featsAr:["الخدمة الذاتية للموظفين","الإجازات والحضور والانصراف","مسير الرواتب وحماية الأجور (مُدد)","إدارة المهام","طلبات العمل والسلف","تقارير بالذكاء الاصطناعي"]},
-  {id:"premium", tag:"Smart Operations", name:"Premium", nameAr:"الباقة الاحترافية",
+  {id:"premium", tag:"Smart Operations", tagAr:"عمليات ذكية", name:"Premium", nameAr:"الباقة الاحترافية",
    feats:["Everything in Essential","Performance management (180° & 360°)","Muqeem & Mudad integration","Health & perks","Custom requests & fields","Basic workflows"],
    featsAr:["كل مميزات الباقة الأساسية","إدارة الأداء (180° و360°)","التكامل مع مقيم ومُدد","الصحة والمزايا","الطلبات والحقول المخصصة","مسارات العمل الأساسية"]},
-  {id:"enterprise", tag:"Complete Suite", name:"Enterprise", nameAr:"باقة الأعمال",
+  {id:"enterprise", tag:"Complete Suite", tagAr:"الباقة الكاملة", name:"Enterprise", nameAr:"باقة الأعمال",
    feats:["Everything in Premium","2-factor authentication","Surveys & engagement","Bayzat AI (Knowledge Hub)","Advanced workflows","Custom SIF"],
    featsAr:["كل مميزات الباقة الاحترافية","المصادقة الثنائية","الاستبيانات والتفاعل","بيزات AI (مركز المعرفة)","مسارات العمل المتقدمة","ملف SIF مخصص"]},
 ];
 const PKGS = [
-  {id:0, tag:"Self-Service Plus", name:"Bronze", nameAr:"الباقة البرونزية",
+  {id:0, tag:"Self-Service Plus", tagAr:"خدمة ذاتية موسّعة", name:"Bronze", nameAr:"الباقة البرونزية",
    feats:["Multi-channel support (4h response) during working hours","Email-based success & tech support","1 platform config/year + 5 custom reports","Recorded webinars & self-help training","Quarterly 1:1 with Customer Success + feature insights"],
    featsAr:["دعم متعدد القنوات (استجابة خلال 4 ساعات) في أوقات العمل","دعم فني ونجاح عملاء عبر الإيميل","إعداد واحد للمنصة سنويًا + 5 تقارير مخصصة","ندوات مسجلة وتدريب ذاتي","اجتماع ربع سنوي مع فريق نجاح العملاء"]},
-  {id:1, tag:"Managed Support", name:"Silver", nameAr:"الباقة الفضية",
+  {id:1, tag:"Managed Support", tagAr:"دعم مُدار", name:"Silver", nameAr:"الباقة الفضية",
    feats:["Multi-channel support (2h response) during working hours","Remote Success Manager: 24h response, 3 trainings, monthly check-ins","Dedicated tech specialist + 3 platform configs/year","Live & recorded webinars, self-help, 15 custom reports","Product roadmap & feature insights"],
    featsAr:["دعم متعدد القنوات (استجابة خلال ساعتين) في أوقات العمل","مدير نجاح عن بُعد: استجابة خلال 24 ساعة، 3 تدريبات، متابعة شهرية","مختص تقني مخصص + 3 إعدادات للمنصة سنويًا","ندوات مباشرة ومسجلة + 15 تقرير مخصص","خارطة طريق المنتج ورؤى المزايا"]},
-  {id:2, tag:"Strategic Partnership", name:"Gold", nameAr:"الباقة الذهبية",
+  {id:2, tag:"Strategic Partnership", tagAr:"شراكة استراتيجية", name:"Gold", nameAr:"الباقة الذهبية",
    feats:["Multi-channel support (30m response) + 1:1 sessions","In-market Success Manager: 24h response, unlimited training & strategy","Dedicated tech specialist, unlimited configs & reports","Unlimited QA, webinars & new feature implementation included","Product roadmap & feature insights"],
    featsAr:["دعم متعدد القنوات (استجابة خلال 30 دقيقة) + جلسات فردية","مدير نجاح داخل السوق: تدريب واستراتيجية بلا حدود","مختص تقني مخصص، إعدادات وتقارير بلا حدود","ضمان جودة وندوات وتفعيل مزايا جديدة بلا حدود","خارطة طريق المنتج ورؤى المزايا"]},
 ];
@@ -341,13 +364,13 @@ const CMP = [
 
 /* ================= ATS DATA ================= */
 const ATS_RATES = {
-  rpro:  {name:"Recruiter Pro", tag:"Solo Hiring", prices:[24800,14850,4900],
+  rpro:  {name:"Recruiter Pro", tag:"Solo Hiring", tagAr:"توظيف فردي", prices:[24800,14850,4900],
     feats:["Total 5 job roles, unlimited candidates","Up to 2 hiring managers / interviewers","Job board integrations & career site builder","Google / Outlook email integration","Basic screening & interview scheduling","1,000 AI CV credits + 5 hrs AI note-taking"],
     featsAr:["5 وظائف ومرشحون بلا حدود","حتى 2 من مدراء التوظيف","تكامل مع منصات التوظيف وصفحة توظيف خاصة","تكامل الإيميل Google / Outlook","فرز أساسي وجدولة المقابلات","1,000 رصيد AI للسير الذاتية + 5 ساعات تدوين ذكي"]},
-  teams: {name:"Teams", tag:"Talent Acquisition Teams", prices:[35400,21200,7000],
+  teams: {name:"Teams", tag:"Talent Acquisition Teams", tagAr:"فرق استقطاب المواهب", prices:[35400,21200,7000],
     feats:["Everything in Recruiter Pro","Unlimited jobs & candidates, 10 hiring managers","All-employee access (referrals)","Advanced screening: skill tests, one-way video","Candidate self-scheduling","Offer management & e-signature","5,000 AI CV credits + 25 hrs AI note-taking"],
     featsAr:["كل مميزات Recruiter Pro","وظائف ومرشحون بلا حدود + 10 مدراء توظيف","وصول جميع الموظفين (الترشيحات)","فرز متقدم: اختبارات مهارات ومقابلات فيديو","جدولة ذاتية للمرشحين","إدارة العروض والتوقيع الإلكتروني","5,000 رصيد AI + 25 ساعة تدوين ذكي"]},
-  tpro:  {name:"Teams Pro", tag:"Advanced Requirements", prices:[49600,29700,9800],
+  tpro:  {name:"Teams Pro", tag:"Advanced Requirements", tagAr:"متطلبات متقدمة", prices:[49600,29700,9800],
     feats:["Everything in Teams","Job requisition & approvals","Psychometric testing","Offer approval flow","Advanced & custom reporting","Open APIs","20,000 AI CV credits + 50 hrs AI note-taking"],
     featsAr:["كل مميزات Teams","طلبات التوظيف والموافقات","الاختبارات النفسية","مسار الموافقة على العروض","تقارير متقدمة ومخصصة","واجهات API مفتوحة","20,000 رصيد AI + 50 ساعة تدوين ذكي"]},
 };
@@ -355,10 +378,10 @@ const ATS_ORDER = ["rpro","teams","tpro"];
 const WC_TIERS = ["75%+ white collar","36-75% white collar","<35% white collar"];
 const WC_TIERS_AR = ["أكثر من 75% موظفو مكاتب","36-75% موظفو مكاتب","أقل من 35% موظفو مكاتب"];
 const ATS_PKGS = [
-  {name:"Silver", nameAr:"الباقة الفضية", tag:"Guided Onboarding", price:2000,
+  {name:"Silver", nameAr:"الباقة الفضية", tag:"Guided Onboarding", tagAr:"تهيئة موجّهة", price:2000,
    feats:["Structured onboarding & training plan","Career site & job board setup assistance","Admin & recruiter training sessions","Standard success check-ins"],
    featsAr:["خطة تهيئة وتدريب منظمة","المساعدة في إعداد صفحة التوظيف ومنصات الوظائف","جلسات تدريب للمسؤولين وفريق التوظيف","متابعة دورية لنجاح العملاء"]},
-  {name:"Gold", nameAr:"الباقة الذهبية", tag:"Premium Onboarding", price:5000,
+  {name:"Gold", nameAr:"الباقة الذهبية", tag:"Premium Onboarding", tagAr:"تهيئة متكاملة", price:5000,
    feats:["Everything in Silver","Full white-glove implementation","Custom pipelines, tests & workflows configured for you","Priority success manager & quarterly strategy reviews"],
    featsAr:["كل مميزات الباقة الفضية","تنفيذ كامل بإشراف مختص","إعداد مسارات التوظيف والاختبارات حسب احتياجك","مدير نجاح ذو أولوية ومراجعات استراتيجية ربع سنوية"]},
 ];
@@ -370,6 +393,129 @@ const ATS_CMP = [
   ["cat","Onboarding & hiring"],["Document collection",1,1,1],["Bayzat HRMS integration",1,1,1],["Offer management",0,1,1],["Candidate e-signature",0,1,1],["Offer approval flow",0,0,1],
   ["cat","Reporting & analytics"],["Job reports",0,1,1],["Company reports",0,0,1],["Custom reports on request",0,0,1],
 ];
+
+/* ================= FEATURE TRANSLATIONS (comparison tables) ================= */
+const FEAT_AR = {
+  /* HRMS categories */
+  "Employee records":"سجلات الموظفين","Self service & tasks":"الخدمة الذاتية والمهام","Workflows":"مسارات العمل",
+  "Knowledge Hub (Bayzat AI)":"مركز المعرفة (بيزات AI)","Payroll":"الرواتب","Time off & attendance":"الإجازات والحضور",
+  "Performance":"الأداء","Engagement & wellness":"التفاعل والصحة",
+  /* HRMS rows */
+  "Asset management":"إدارة العهد","Letter requests":"طلبات الخطابات","Custom fields":"الحقول المخصصة",
+  "Custom requests":"الطلبات المخصصة","Employee self service":"الخدمة الذاتية للموظفين","Task management":"إدارة المهام",
+  "Basic workflows":"مسارات العمل الأساسية","Advanced workflows":"مسارات العمل المتقدمة","Shared spaces":"المساحات المشتركة",
+  "Payroll management":"إدارة مسير الرواتب","Employee loans":"سلف الموظفين","Air ticket requests":"طلبات تذاكر السفر",
+  "Employee expenses":"مصروفات الموظفين","Custom SIF":"ملف SIF مخصص","Time off":"الإجازات","Attendance":"الحضور والانصراف",
+  "Shift scheduler":"جدولة المناوبات","Kiosk mode":"وضع Kiosk","Biometric integration":"التكامل مع أجهزة البصمة",
+  "Time sheets":"سجلات الدوام","180° performance":"تقييم الأداء 180°","360° performance":"تقييم الأداء 360°",
+  "Announcements":"الإعلانات","News feed":"آخر المستجدات","Company survey":"استبيانات الشركة","Engagement":"التفاعل",
+  "Perks":"المزايا","Mental health":"الصحة النفسية",
+  /* ATS categories */
+  "Publish jobs & collect candidates":"نشر الوظائف واستقبال المرشحين","Candidate management (CRM)":"إدارة المرشحين (CRM)",
+  "Advanced shortlisting":"الفرز المتقدم","Interview scheduling":"جدولة المقابلات","Onboarding & hiring":"التهيئة والتوظيف",
+  "Reporting & analytics":"التقارير والتحليلات",
+  /* ATS rows */
+  "Jobs":"الوظائف","Job board integrations":"التكامل مع منصات التوظيف","Career site builder":"منشئ صفحة التوظيف",
+  "Headhunting Chrome extension":"إضافة كروم للبحث عن الكفاءات","Agency portal":"بوابة وكالات التوظيف",
+  "Talent pool (general applications)":"قاعدة المواهب (تقديم عام)","Employee access & referrals":"وصول الموظفين والترشيحات",
+  "Job APIs for custom career pages":"واجهات API لصفحات التوظيف المخصصة","Job requisition & approvals":"طلبات التوظيف والموافقات",
+  "Candidate management":"إدارة المرشحين","In-app & email notifications":"إشعارات المنصة والإيميل",
+  "Google/Outlook email integration":"تكامل الإيميل Google/Outlook","WhatsApp integration (coming soon)":"تكامل واتساب (قريبًا)",
+  "Bulk import candidates":"استيراد المرشحين دفعة واحدة","Multiple hiring pipelines":"مسارات توظيف متعددة",
+  "Open APIs (coming soon)":"واجهات API مفتوحة (قريبًا)","Screening questions":"أسئلة الفرز",
+  "AI CV parsing & scoring":"فرز وتقييم السير الذاتية بالذكاء الاصطناعي","Advanced CV search":"بحث متقدم في السير الذاتية",
+  "One-way video interview":"مقابلات فيديو مسجلة","Skill-based tests":"اختبارات المهارات","Psychometric test":"الاختبارات النفسية",
+  "Hiring manager access":"وصول مدراء التوظيف","Interview scheduling (Google & Outlook)":"جدولة المقابلات (Google وOutlook)",
+  "Candidate self-scheduling":"جدولة ذاتية للمرشحين","Feedback forms / scorecards":"نماذج التقييم",
+  "AI notetaker & summary":"التدوين الذكي والملخصات","Document collection":"جمع المستندات",
+  "Bayzat HRMS integration":"التكامل مع نظام بيزات للموارد البشرية","Offer management":"إدارة العروض",
+  "Candidate e-signature":"التوقيع الإلكتروني للمرشحين","Offer approval flow":"مسار الموافقة على العروض",
+  "Job reports":"تقارير الوظائف","Company reports":"تقارير الشركة","Custom reports on request":"تقارير مخصصة عند الطلب",
+  /* cell values */
+  "5 jobs":"5 وظائف","Unlimited":"بلا حدود","1,000 credits":"1,000 رصيد","5,000 credits":"5,000 رصيد",
+  "20,000 credits":"20,000 رصيد","Up to 2":"حتى 2","Up to 10":"حتى 10","5 hrs":"5 ساعات","25 hrs":"25 ساعة","50 hrs":"50 ساعة",
+};
+
+/* ================= UI TRANSLATIONS ================= */
+const UI = {
+  en: {
+    dir:"ltr", htmlLang:"en", pageTitle:"Bayzat KSA — Smart Pricing", langBtn:"عربي", gear:"⚙ Admin settings",
+    heroTitle:'Pricing that <span>makes it</span> in Saudi.',
+    heroSub:"HR, payroll and hiring on one platform. Pick your products, pick your support, see exactly what you'll pay. No surprises — that's the point.",
+    hrmsProdName:"HRMS Platform", hrmsProdDesc:"HR, payroll, time off, Muqeem & Mudad",
+    atsProdName:"ATS — Talent Acquisition", atsProdDesc:"Jobs, candidates, AI screening & offers",
+    lblEmp:"Total employees", lblWc:"% white collar", lblRec:"Recruiters / HR in hiring",
+    bandNote:l=>`Pricing band: ${l} employees`, wcNote:t=>`Tier: ${t}`, recNote:n=>`Suggested: ${n}`,
+    bundlesTitle:'<em>HRMS</em> — choose your bundle', bundlesSub:"All prices in SAR, excluding VAT.",
+    cmpSummary:"Compare every HRMS feature",
+    pkgsTitle:'<em>HRMS</em> — service & support packages', pkgsSub:"Support that scales with you — priced for your team size, billed yearly.",
+    atsBundlesTitle:'<em>ATS</em> — choose your bundle', atsBundlesSub:"Priced by workforce profile. All prices in SAR/year, excluding VAT.",
+    atsCmpSummary:"Compare every ATS feature",
+    atsPkgsTitle:'<em>ATS</em> — onboarding & success packages', atsPkgsSub:"Two options. Billed yearly, multi-year discounts apply.",
+    calcTitle:"The no-brainer calculator", calcSub:"One, two or three years — side by side. Commit longer, pay less.",
+    lblProducts:"Products", lblHrmsBundle:"HRMS bundle", lblHrmsPkg:"HRMS package", lblAtsBundle:"ATS bundle", lblAtsPkg:"ATS package",
+    propTitle:"Build the proposal", propSub:"Uses the selections above. Downloads a .pptx that opens directly in Google Slides for editing.",
+    lblClient:"Client / company name", clientPh:"e.g. Forbes Middle East", lblYears:"Contract options to include",
+    lblLang:"Proposal language", lblValid:"Offer valid until", lblPay:"Payment terms", lblRep:"Sent by",
+    lblLogo:"Client logo (first page)", logoHint:"Click to attach the client's logo (PNG / JPG)",
+    logoReplace:"Click to replace · logo will appear on the cover",
+    genBtn:"Generate proposal (.pptx)",
+    genNoteBad:"Enter the client name, the offer validity date, and tick at least one contract option.",
+    genNoteIncl:"Includes: ",
+    footerText:"Bayzat KSA pricing — Q1 2026 rate charts (HRMS &amp; ATS). Billed annually in SAR, excluding VAT. HRMS service packages replace one-time implementation fees; ATS onboarding packages billed yearly. AI CV credits &amp; note-taking beyond included allowance are usage-based (SAR 2,000 / 10,000 CVs · SAR 1,600 / 100 hrs). Multi-year discounts apply to bundles and packages and are configurable in admin settings.",
+    modalTitle:"Admin settings", modalDesc:"Contract-length discounts (%). Applied to bundles and service packages of each product in the calculator and proposals.",
+    headHrms:"HRMS", headAts:"ATS", saveBtn:"Save", resetBtn:"Reset to defaults (HRMS 0/5/10 · ATS 0/10/20)",
+    yearsLbl:y=>y+" year"+(y>1?"s":""), mostPopular:"Most popular", suggested:"Suggested for your team",
+    selected:"Selected", choose:"Choose plan", none:"None", perYr:" /year", perUser:" /user/month",
+    flatFee:"flat fee for your team size", subPrice:(a,n)=>`${a} /year for ${n} employees`,
+    puPrice:p=>`SAR ${p}`, forTeams:l=>`for teams of ${l}`, from11:"Available from 11 employees",
+    onbSub:"onboarding, training & success",
+    employees:"Employees", hrmsHead:"HRMS Platform", atsHead:"ATS",
+    bundleRow:n=>`${n} bundle /yr`, pkgRow:n=>`${n} package /yr`, atsRow:n=>`${n} /yr`, atsPkgRow:n=>`${n} onboarding /yr`,
+    perYear:"Per year", totalContract:y=>`Total ${y}-year contract`, youSave:s=>`You save ${s}`, baseline:"Baseline price",
+    bestValue:"Best value", discOff:(p,n)=>`${n} ${p}% off`,
+    sar:n=>"SAR "+n,
+  },
+  ar: {
+    dir:"rtl", htmlLang:"ar", pageTitle:"بيزات السعودية — التسعير الذكي", langBtn:"English", gear:"⚙ إعدادات المسؤول",
+    heroTitle:'تسعير واضح <span>يوصلك للصفقة</span> — لمنشآت السعودية.',
+    heroSub:"الموارد البشرية ومسير الرواتب والتوظيف في منصة واحدة. اختر منتجاتك وباقة الدعم المناسبة، وشوف بالضبط كم بتدفع. بدون مفاجآت — وهذي هي الفكرة.",
+    hrmsProdName:"منصة الموارد البشرية HRMS", hrmsProdDesc:"الموارد البشرية، مسير الرواتب، الإجازات، مقيم ومُدد",
+    atsProdName:"نظام التوظيف — ATS", atsProdDesc:"الوظائف والمرشحون والفرز بالذكاء الاصطناعي والعروض",
+    lblEmp:"إجمالي الموظفين", lblWc:"% الموظفين المكتبيين", lblRec:"المسؤولون عن التوظيف",
+    bandNote:l=>`شريحة التسعير: ${l} موظف`, wcNote:t=>`الفئة: ${t}`, recNote:n=>`نقترح: ${n}`,
+    bundlesTitle:'<em>الموارد البشرية</em> — اختر باقتك', bundlesSub:"جميع الأسعار بالريال السعودي، غير شاملة ضريبة القيمة المضافة.",
+    cmpSummary:"قارن جميع مميزات باقات الموارد البشرية",
+    pkgsTitle:'<em>الموارد البشرية</em> — باقات الدعم والخدمات', pkgsSub:"دعم يواكب نمو فريقك — السعر حسب حجم منشأتك، ويُدفع سنويًا.",
+    atsBundlesTitle:'<em>التوظيف</em> — اختر باقتك', atsBundlesSub:"التسعير حسب تركيبة القوى العاملة. جميع الأسعار بالريال سنويًا، غير شاملة الضريبة.",
+    atsCmpSummary:"قارن جميع مميزات نظام التوظيف",
+    atsPkgsTitle:'<em>التوظيف</em> — باقات التهيئة والتدريب', atsPkgsSub:"خياران، يُدفعان سنويًا، وتنطبق عليهما خصومات العقود الطويلة.",
+    calcTitle:"احسبها صح", calcSub:"سنة أو سنتين أو ثلاث — جنبًا إلى جنب. كل ما طال التزامك، انخفض سعرك.",
+    lblProducts:"المنتجات", lblHrmsBundle:"باقة الموارد البشرية", lblHrmsPkg:"باقة الدعم", lblAtsBundle:"باقة التوظيف", lblAtsPkg:"باقة التهيئة",
+    propTitle:"جهّز عرض السعر", propSub:"يعتمد على اختياراتك أعلاه، وينزّل ملف ‎.pptx يفتح مباشرة في Google Slides للتعديل.",
+    lblClient:"اسم العميل / الشركة", clientPh:"مثال: فوربس الشرق الأوسط", lblYears:"مدد العقد في العرض",
+    lblLang:"لغة العرض", lblValid:"العرض ساري حتى", lblPay:"شروط الدفع", lblRep:"مقدّم العرض",
+    lblLogo:"شعار العميل (صفحة الغلاف)", logoHint:"اضغط لإرفاق شعار العميل (PNG / JPG)",
+    logoReplace:"اضغط للاستبدال · سيظهر الشعار على الغلاف",
+    genBtn:"أنشئ عرض السعر (.pptx)",
+    genNoteBad:"أدخل اسم العميل وتاريخ سريان العرض، واختر مدة عقد واحدة على الأقل.",
+    genNoteIncl:"يشمل: ",
+    footerText:"أسعار بيزات السعودية — جداول أسعار الربع الأول 2026 (الموارد البشرية والتوظيف). تُدفع سنويًا بالريال السعودي، غير شاملة الضريبة. باقات الدعم والخدمات تحل محل رسوم التنفيذ لمرة واحدة، وباقات تهيئة نظام التوظيف تُدفع سنويًا. رصيد الذكاء الاصطناعي للسير الذاتية والتدوين الذكي بعد الحد المشمول يُحسب حسب الاستخدام (2,000 ريال / 10,000 سيرة ذاتية · 1,600 ريال / 100 ساعة). خصومات العقود المتعددة السنوات تنطبق على الباقات ويمكن ضبطها من إعدادات المسؤول.",
+    modalTitle:"إعدادات المسؤول", modalDesc:"خصومات مدة العقد (%). تُطبق على باقات كل منتج في الحاسبة وعروض الأسعار.",
+    headHrms:"الموارد البشرية", headAts:"التوظيف", saveBtn:"حفظ", resetBtn:"إعادة الضبط الافتراضي (الموارد البشرية 0/5/10 · التوظيف 0/10/20)",
+    yearsLbl:y=>y===1?"سنة":y===2?"سنتين":y+" سنوات", mostPopular:"الأكثر اختيارًا", suggested:"مقترحة لفريقك",
+    selected:"مختارة", choose:"اختر الباقة", none:"بدون", perYr:" /سنة", perUser:" /موظف/شهر",
+    flatFee:"سعر ثابت لحجم فريقك", subPrice:(a,n)=>`${a} /سنة لفريق من ${n} موظف`,
+    puPrice:p=>`${p} ريال`, forTeams:l=>`لفرق من ${l} موظف`, from11:"متاحة من 11 موظفًا فأكثر",
+    onbSub:"تهيئة وتدريب ونجاح عملاء",
+    employees:"الموظفون", hrmsHead:"نظام الموارد البشرية", atsHead:"نظام التوظيف (ATS)",
+    bundleRow:n=>`${n} /سنة`, pkgRow:n=>`${n} /سنة`, atsRow:n=>`${n} /سنة`, atsPkgRow:n=>`تهيئة — ${n} /سنة`,
+    perYear:"المجموع في السنة", totalContract:y=>`إجمالي عقد ${y===1?"سنة":y===2?"سنتين":y+" سنوات"}`,
+    youSave:s=>`توفيرك ${s}`, baseline:"السعر المرجعي",
+    bestValue:"الأفضل قيمة", discOff:(p,n)=>`خصم ${p}% على ${n}`,
+    sar:n=>n+" ريال",
+  }
+};
 
 /* ================= TEAM (sales reps) =================
    Paste your Google Sheet "published to web" CSV link into TEAM_SHEET_URL.
@@ -391,11 +537,6 @@ const PAY_TERMS = [
   {en:"25% upfront, 25% after 3 months, 25% after 6 months, 25% after 9 months", ar:"25% مقدمًا، و25% بعد 3 أشهر، و25% بعد 6 أشهر، و25% بعد 9 أشهر"},
 ];
 
-/* social icons (base64 PNG) used in the generated pptx */
-const ICON_LINKEDIN = "data:image/png;base64,__ICON_LINKEDIN__";
-const ICON_WHATSAPP = "data:image/png;base64,__ICON_WHATSAPP__";
-const ICON_EMAIL    = "data:image/png;base64,__ICON_EMAIL__";
-
 /* ================= STATE ================= */
 const DEFAULT_DISC = {hrms:[0,5,10], ats:[0,10,20]};
 let disc = loadDisc();
@@ -407,11 +548,17 @@ let selAtsPkg = 0;
 let propYears = [false, false, true];   // 1yr, 2yr, 3yr
 let propLang = "en";
 let clientLogo = null;                   // {data, w, h}
+let uiLang = loadLang();
 function loadDisc(){ try{const s=localStorage.getItem("bz_ksa_disc_v2"); if(s){const d=JSON.parse(s); if(d&&d.hrms&&d.ats) return d;}}catch(e){} return JSON.parse(JSON.stringify(DEFAULT_DISC)); }
 function persistDisc(){ try{localStorage.setItem("bz_ksa_disc_v2", JSON.stringify(disc));}catch(e){} }
+function loadLang(){ try{const l=localStorage.getItem("bz_ksa_lang"); if(l==="ar"||l==="en") return l;}catch(e){} return "en"; }
 
 /* ================= HELPERS ================= */
-const fmt = n => "SAR " + Math.round(n).toLocaleString("en-US");
+const S = () => UI[uiLang];
+const tr = s => uiLang==="ar" ? (FEAT_AR[s]||s) : s;
+const locB = b => uiLang==="ar" ? b.nameAr : b.name;
+const locTag = b => uiLang==="ar" ? (b.tagAr||b.tag) : b.tag;
+const fmt = n => S().sar(Math.round(n).toLocaleString("en-US"));
 const fmtN = n => Math.round(n).toLocaleString("en-US");
 function bandIndex(n){ for(let i=0;i<BANDS.length;i++) if(n>=BANDS[i].min && n<=BANDS[i].max) return i; return BANDS.length-1; }
 function bundleAnnual(id, n){ const b=BUNDLE_RATES[id], i=bandIndex(n); return i<2 ? b.flat[i] : b.pupm[i-2]*n*12; }
@@ -426,6 +573,52 @@ function getInputs(){
   let pct = Math.min(100, Math.max(0, parseFloat(document.getElementById("wcPct").value)||0));
   let rec = Math.max(0, parseInt(document.getElementById("recruiters").value)||0);
   return {n, pct, rec};
+}
+
+/* ================= LANGUAGE ================= */
+function toggleLang(){ setLang(uiLang==="en" ? "ar" : "en"); }
+function setLang(l){
+  uiLang = l;
+  try{localStorage.setItem("bz_ksa_lang", l);}catch(e){}
+  const d = S();
+  document.documentElement.lang = d.htmlLang;
+  document.documentElement.dir = d.dir;
+  document.title = d.pageTitle;
+  applyStatic();
+  fillPayTerms();
+  fillRepSelect();
+  render();
+}
+function applyStatic(){
+  const d = S();
+  const set = (id, v, html) => { const el=document.getElementById(id); if(el){ if(html) el.innerHTML=v; else el.textContent=v; } };
+  set("langBtn", d.langBtn); set("gearBtn", d.gear);
+  set("heroTitle", d.heroTitle, true); set("heroSub", d.heroSub);
+  set("hrmsProdName", d.hrmsProdName); set("hrmsProdDesc", d.hrmsProdDesc);
+  set("atsProdName", d.atsProdName); set("atsProdDesc", d.atsProdDesc);
+  set("lblEmp", d.lblEmp); set("lblWc", d.lblWc); set("lblRec", d.lblRec);
+  set("bundlesTitle", d.bundlesTitle, true); set("bundlesSub", d.bundlesSub); set("cmpSummary", d.cmpSummary);
+  set("pkgsTitle", d.pkgsTitle, true); set("pkgsSub", d.pkgsSub);
+  set("atsBundlesTitle", d.atsBundlesTitle, true); set("atsBundlesSub", d.atsBundlesSub); set("atsCmpSummary", d.atsCmpSummary);
+  set("atsPkgsTitle", d.atsPkgsTitle, true); set("atsPkgsSub", d.atsPkgsSub);
+  set("calcTitle", d.calcTitle); set("calcSub", d.calcSub);
+  set("propTitle", d.propTitle); set("propSub", d.propSub);
+  set("lblClient", d.lblClient); set("lblYears", d.lblYears); set("lblLang", d.lblLang);
+  set("lblValid", d.lblValid); set("lblPay", d.lblPay); set("lblRep", d.lblRep); set("lblLogo", d.lblLogo);
+  if(!clientLogo) set("logoHint", d.logoHint);
+  set("genBtn", d.genBtn);
+  set("footerText", d.footerText, true);
+  set("modalTitle", d.modalTitle); set("modalDesc", d.modalDesc);
+  set("headHrms", d.headHrms); set("headAts", d.headAts);
+  set("lblY1", d.yearsLbl(1)); set("lblY2", d.yearsLbl(2)); set("lblY3", d.yearsLbl(3));
+  set("saveBtn", d.saveBtn); set("resetBtn", d.resetBtn);
+  document.getElementById("clientName").placeholder = d.clientPh;
+}
+function fillPayTerms(){
+  const sel = document.getElementById("payTerms");
+  const keep = sel.selectedIndex >= 0 ? sel.selectedIndex : 0;
+  sel.innerHTML = PAY_TERMS.map((p,i)=>`<option value="${i}">${uiLang==="ar"?p.ar:p.en}</option>`).join("");
+  sel.selectedIndex = keep;
 }
 
 /* ================= TEAM LOADING ================= */
@@ -464,7 +657,12 @@ function loadTeam(){
 }
 function fillRepSelect(){
   const sel = document.getElementById("repSelect");
-  sel.innerHTML = TEAM.map((m,i)=>`<option value="${i}">${m.nameEn}${m.nameAr?" — "+m.nameAr:""}</option>`).join("");
+  const keep = sel.selectedIndex >= 0 ? sel.selectedIndex : 0;
+  sel.innerHTML = TEAM.map((m,i)=>{
+    const label = uiLang==="ar" ? (m.nameAr||m.nameEn) : m.nameEn;
+    return `<option value="${i}">${label}</option>`;
+  }).join("");
+  sel.selectedIndex = Math.min(keep, TEAM.length-1);
   renderProp();
 }
 
@@ -480,16 +678,17 @@ function toggleProduct(p){
 function render(){
   const {n, pct, rec} = getInputs();
   const bi = bandIndex(n);
+  const d = S();
 
   document.getElementById("prodHrms").classList.toggle("on", products.hrms);
   document.getElementById("prodAts").classList.toggle("on", products.ats);
   document.querySelectorAll(".hrms-only").forEach(el=>el.classList.toggle("hidden", !products.hrms));
   document.querySelectorAll(".ats-only").forEach(el=>el.classList.toggle("hidden", !products.ats));
 
-  document.getElementById("bandNote").textContent = "Pricing band: " + BANDS[bi].label + " employees";
+  document.getElementById("bandNote").textContent = d.bandNote(BANDS[bi].label);
   if(products.ats){
-    document.getElementById("wcNote").textContent = "Tier: " + WC_TIERS[wcTier(pct)];
-    document.getElementById("recNote").textContent = "Suggested: " + ATS_RATES[recommendAts(rec)].name;
+    document.getElementById("wcNote").textContent = d.wcNote((uiLang==="ar"?WC_TIERS_AR:WC_TIERS)[wcTier(pct)]);
+    document.getElementById("recNote").textContent = d.recNote(ATS_RATES[recommendAts(rec)].name);
   }
   if(selPkg===2 && PKG_PRICES[bi][2]===null) selPkg = 1;
 
@@ -501,103 +700,115 @@ function render(){
 }
 
 function renderBundles(n){
+  const d = S();
   const el = document.getElementById("bundleCards");
   el.innerHTML = BUNDLES.map(b=>{
     const ann = bundleAnnual(b.id,n), pu = bundlePUPM(b.id,n);
+    const feats = uiLang==="ar" ? b.featsAr : b.feats;
     const priceHtml = pu===null
-      ? `<div class="price">${fmt(ann)}<small> /year</small></div><div class="sub-price">flat fee for your team size</div>`
-      : `<div class="price">SAR ${pu}<small> /user/month</small></div><div class="sub-price">${fmt(ann)} /year for ${n} employees</div>`;
+      ? `<div class="price">${fmt(ann)}<small>${d.perYr}</small></div><div class="sub-price">${d.flatFee}</div>`
+      : `<div class="price">${d.puPrice(pu)}<small>${d.perUser}</small></div><div class="sub-price">${d.subPrice(fmt(ann), n)}</div>`;
     return `<div class="card ${selBundle===b.id?"selected":""}">
-      ${b.id==="premium"?'<div class="pop">Most popular</div>':""}
-      <span class="tag">${b.tag}</span><h3>${b.name}</h3>${priceHtml}
-      <button class="btn ${selBundle===b.id?"":"ghost"}" onclick="selBundle='${b.id}';render()">${selBundle===b.id?"Selected":"Choose plan"}</button>
-      <ul class="feats">${b.feats.map(f=>`<li>${f}</li>`).join("")}</ul>
+      ${b.id==="premium"?`<div class="pop">${d.mostPopular}</div>`:""}
+      <span class="tag">${locTag(b)}</span><h3>${locB(b)}</h3>${priceHtml}
+      <button class="btn ${selBundle===b.id?"":"ghost"}" onclick="selBundle='${b.id}';render()">${selBundle===b.id?d.selected:d.choose}</button>
+      <ul class="feats">${feats.map(f=>`<li>${f}</li>`).join("")}</ul>
     </div>`;
   }).join("");
   document.getElementById("cmpTable").innerHTML =
-    `<tr><th></th><th>Essential</th><th>Premium</th><th>Enterprise</th></tr>` +
+    `<tr><th></th>${BUNDLES.map(b=>`<th>${locB(b)}</th>`).join("")}</tr>` +
     CMP.map(r=> r[0]==="cat"
-      ? `<tr class="cat"><td colspan="4">${r[1]}</td></tr>`
-      : `<tr><td>${r[0]}</td>${[1,2,3].map(i=>`<td class="${r[i]?"yes":"no"}">${r[i]?"✓":"—"}</td>`).join("")}</tr>`).join("");
+      ? `<tr class="cat"><td colspan="4">${tr(r[1])}</td></tr>`
+      : `<tr><td>${tr(r[0])}</td>${[1,2,3].map(i=>`<td class="${r[i]?"yes":"no"}">${r[i]?"✓":"—"}</td>`).join("")}</tr>`).join("");
 }
 
 function renderPkgs(n, bi){
+  const d = S();
   document.getElementById("pkgCards").innerHTML = PKGS.map(p=>{
     const price = PKG_PRICES[bi][p.id];
     const avail = price!==null;
+    const feats = uiLang==="ar" ? p.featsAr : p.feats;
     return `<div class="card ${selPkg===p.id?"selected":""}">
-      <span class="tag">${p.tag}</span><h3>${p.name}</h3>
+      <span class="tag">${locTag(p)}</span><h3>${locB(p)}</h3>
       ${avail
-        ? `<div class="price">${fmt(price)}<small> /year</small></div><div class="sub-price">for teams of ${BANDS[bi].label}</div>`
-        : `<div class="price" style="color:var(--g4)">—</div><div class="sub-price">Available from 11 employees</div>`}
-      <button class="btn ${selPkg===p.id?"":"ghost"}" ${avail?"":"disabled"} onclick="selPkg=${p.id};render()">${selPkg===p.id?"Selected":"Choose plan"}</button>
-      <ul class="feats">${p.feats.map(f=>`<li>${f}</li>`).join("")}</ul>
+        ? `<div class="price">${fmt(price)}<small>${d.perYr}</small></div><div class="sub-price">${d.forTeams(BANDS[bi].label)}</div>`
+        : `<div class="price" style="color:var(--g4)">—</div><div class="sub-price">${d.from11}</div>`}
+      <button class="btn ${selPkg===p.id?"":"ghost"}" ${avail?"":"disabled"} onclick="selPkg=${p.id};render()">${selPkg===p.id?d.selected:d.choose}</button>
+      <ul class="feats">${feats.map(f=>`<li>${f}</li>`).join("")}</ul>
     </div>`;
   }).join("");
 }
 
 function renderAtsBundles(pct, rec){
+  const d = S();
   const recId = recommendAts(rec);
   document.getElementById("atsBundleCards").innerHTML = ATS_ORDER.map(id=>{
     const b = ATS_RATES[id], price = atsAnnual(id, pct);
+    const feats = uiLang==="ar" ? b.featsAr : b.feats;
     return `<div class="card ${selAtsBundle===id?"selected":""}">
-      ${id===recId?'<div class="pop">Suggested for your team</div>':""}
-      <span class="tag">${b.tag}</span><h3>${b.name}</h3>
-      <div class="price">${fmt(price)}<small> /year</small></div>
-      <div class="sub-price">${WC_TIERS[wcTier(pct)]}</div>
-      <button class="btn ${selAtsBundle===id?"":"ghost"}" onclick="selAtsBundle='${id}';render()">${selAtsBundle===id?"Selected":"Choose plan"}</button>
-      <ul class="feats">${b.feats.map(f=>`<li>${f}</li>`).join("")}</ul>
+      ${id===recId?`<div class="pop">${d.suggested}</div>`:""}
+      <span class="tag">${locTag(b)}</span><h3>${b.name}</h3>
+      <div class="price">${fmt(price)}<small>${d.perYr}</small></div>
+      <div class="sub-price">${(uiLang==="ar"?WC_TIERS_AR:WC_TIERS)[wcTier(pct)]}</div>
+      <button class="btn ${selAtsBundle===id?"":"ghost"}" onclick="selAtsBundle='${id}';render()">${selAtsBundle===id?d.selected:d.choose}</button>
+      <ul class="feats">${feats.map(f=>`<li>${f}</li>`).join("")}</ul>
     </div>`;
   }).join("");
   document.getElementById("atsCmpTable").innerHTML =
     `<tr><th></th><th>Recruiter Pro</th><th>Teams</th><th>Teams Pro</th></tr>` +
     ATS_CMP.map(r=> r[0]==="cat"
-      ? `<tr class="cat"><td colspan="4">${r[1]}</td></tr>`
-      : `<tr><td>${r[0]}</td>${[1,2,3].map(i=>{
+      ? `<tr class="cat"><td colspan="4">${tr(r[1])}</td></tr>`
+      : `<tr><td>${tr(r[0])}</td>${[1,2,3].map(i=>{
           const v=r[i];
-          return typeof v==="string" ? `<td class="yes" style="font-size:11.5px">${v}</td>` : `<td class="${v?"yes":"no"}">${v?"✓":"—"}</td>`;
+          return typeof v==="string" ? `<td class="yes" style="font-size:11.5px">${tr(v)}</td>` : `<td class="${v?"yes":"no"}">${v?"✓":"—"}</td>`;
         }).join("")}</tr>`).join("");
 }
 
 function renderAtsPkgs(){
-  document.getElementById("atsPkgCards").innerHTML = ATS_PKGS.map((p,i)=>`
+  const d = S();
+  document.getElementById("atsPkgCards").innerHTML = ATS_PKGS.map((p,i)=>{
+    const feats = uiLang==="ar" ? p.featsAr : p.feats;
+    return `
     <div class="card ${selAtsPkg===i?"selected":""}">
-      <span class="tag">${p.tag}</span><h3>${p.name}</h3>
-      <div class="price">${fmt(p.price)}<small> /year</small></div>
-      <div class="sub-price">onboarding, training & success</div>
-      <button class="btn ${selAtsPkg===i?"":"ghost"}" onclick="selAtsPkg=${i};render()">${selAtsPkg===i?"Selected":"Choose plan"}</button>
-      <ul class="feats">${p.feats.map(f=>`<li>${f}</li>`).join("")}</ul>
-    </div>`).join("");
+      <span class="tag">${locTag(p)}</span><h3>${locB(p)}</h3>
+      <div class="price">${fmt(p.price)}<small>${d.perYr}</small></div>
+      <div class="sub-price">${d.onbSub}</div>
+      <button class="btn ${selAtsPkg===i?"":"ghost"}" onclick="selAtsPkg=${i};render()">${selAtsPkg===i?d.selected:d.choose}</button>
+      <ul class="feats">${feats.map(f=>`<li>${f}</li>`).join("")}</ul>
+    </div>`;
+  }).join("");
 }
 
 function renderChips(bi){
-  document.getElementById("calcProdChips").innerHTML = '<span class="lbl">Products</span>' +
+  const d = S();
+  document.getElementById("calcProdChips").innerHTML = `<span class="lbl">${d.lblProducts}</span>` +
     `<button class="chip ${products.hrms?"on":""}" onclick="toggleProduct('hrms')">HRMS</button>` +
     `<button class="chip ${products.ats?"on alt":""}" onclick="toggleProduct('ats')">ATS</button>`;
-  document.getElementById("bundleChips").innerHTML = '<span class="lbl">HRMS bundle</span>' +
-    BUNDLES.map(b=>`<button class="chip ${selBundle===b.id?"on":""}" onclick="selBundle='${b.id}';render()">${b.name}</button>`).join("");
-  document.getElementById("pkgChips").innerHTML = '<span class="lbl">HRMS package</span>' +
-    `<button class="chip ${selPkg===-1?"on":""}" onclick="selPkg=-1;render()">None</button>` +
+  document.getElementById("bundleChips").innerHTML = `<span class="lbl">${d.lblHrmsBundle}</span>` +
+    BUNDLES.map(b=>`<button class="chip ${selBundle===b.id?"on":""}" onclick="selBundle='${b.id}';render()">${locB(b)}</button>`).join("");
+  document.getElementById("pkgChips").innerHTML = `<span class="lbl">${d.lblHrmsPkg}</span>` +
+    `<button class="chip ${selPkg===-1?"on":""}" onclick="selPkg=-1;render()">${d.none}</button>` +
     PKGS.map(p=>{
       const off = PKG_PRICES[bi][p.id]===null;
-      return `<button class="chip ${selPkg===p.id?"on":""}" ${off?"disabled":""} onclick="selPkg=${p.id};render()">${p.name}</button>`;
+      return `<button class="chip ${selPkg===p.id?"on":""}" ${off?"disabled":""} onclick="selPkg=${p.id};render()">${locB(p)}</button>`;
     }).join("");
-  document.getElementById("atsBundleChips").innerHTML = '<span class="lbl">ATS bundle</span>' +
+  document.getElementById("atsBundleChips").innerHTML = `<span class="lbl">${d.lblAtsBundle}</span>` +
     ATS_ORDER.map(id=>`<button class="chip ${selAtsBundle===id?"on alt":""}" onclick="selAtsBundle='${id}';render()">${ATS_RATES[id].name}</button>`).join("");
-  document.getElementById("atsPkgChips").innerHTML = '<span class="lbl">ATS package</span>' +
-    `<button class="chip ${selAtsPkg===-1?"on alt":""}" onclick="selAtsPkg=-1;render()">None</button>` +
-    ATS_PKGS.map((p,i)=>`<button class="chip ${selAtsPkg===i?"on alt":""}" onclick="selAtsPkg=${i};render()">${p.name}</button>`).join("");
+  document.getElementById("atsPkgChips").innerHTML = `<span class="lbl">${d.lblAtsPkg}</span>` +
+    `<button class="chip ${selAtsPkg===-1?"on alt":""}" onclick="selAtsPkg=-1;render()">${d.none}</button>` +
+    ATS_PKGS.map((p,i)=>`<button class="chip ${selAtsPkg===i?"on alt":""}" onclick="selAtsPkg=${i};render()">${locB(p)}</button>`).join("");
 }
 
 function renderCalc(n, pct){
+  const d = S();
   const hSub = products.hrms ? bundleAnnual(selBundle, n) : 0;
   const hPkg = products.hrms && selPkg>=0 ? (pkgAnnual(selPkg,n)||0) : 0;
   const aSub = products.ats ? atsAnnual(selAtsBundle, pct) : 0;
   const aPkg = products.ats ? atsPkgAnnual() : 0;
-  const bName = BUNDLES.find(b=>b.id===selBundle).name;
-  const pName = selPkg>=0 ? PKGS[selPkg].name : null;
+  const bName = locB(BUNDLES.find(b=>b.id===selBundle));
+  const pName = selPkg>=0 ? locB(PKGS[selPkg]) : null;
   const aName = ATS_RATES[selAtsBundle].name;
-  const apName = selAtsPkg>=0 ? ATS_PKGS[selAtsPkg].name : null;
+  const apName = selAtsPkg>=0 ? locB(ATS_PKGS[selAtsPkg]) : null;
   const base1 = (hSub+hPkg)*(1-disc.hrms[0]/100) + (aSub+aPkg)*(1-disc.ats[0]/100);
 
   document.getElementById("yearCards").innerHTML = [1,2,3].map((yrs,i)=>{
@@ -605,34 +816,35 @@ function renderCalc(n, pct){
     const hSubD=hSub*(1-dh), hPkgD=hPkg*(1-dh), aSubD=aSub*(1-da), aPkgD=aPkg*(1-da);
     const yearly = hSubD+hPkgD+aSubD+aPkgD, contract = yearly*yrs;
     const saving = (base1 - yearly) * yrs;
-    const discLbl = [products.hrms&&disc.hrms[i]>0?`HRMS ${disc.hrms[i]}% off`:null, products.ats&&disc.ats[i]>0?`ATS ${disc.ats[i]}% off`:null].filter(Boolean).join(" · ");
-    let rows = `<div class="row"><span>Employees</span><b>${n}</b></div>`;
+    const discLbl = [products.hrms&&disc.hrms[i]>0?d.discOff(disc.hrms[i], d.headHrms):null, products.ats&&disc.ats[i]>0?d.discOff(disc.ats[i], d.headAts):null].filter(Boolean).join(" · ");
+    let rows = `<div class="row"><span>${d.employees}</span><b>${n}</b></div>`;
     if(products.hrms){
-      rows += `<div class="row subhead"><span>HRMS Platform</span></div>`;
-      rows += `<div class="row"><span>${bName} bundle /yr</span><b>${dh>0?`<span class="strike">${fmt(hSub)}</span>`:""}${fmt(hSubD)}</b></div>`;
-      if(pName) rows += `<div class="row"><span>${pName} package /yr</span><b>${dh>0?`<span class="strike">${fmt(hPkg)}</span>`:""}${fmt(hPkgD)}</b></div>`;
+      rows += `<div class="row subhead"><span>${d.hrmsHead}</span></div>`;
+      rows += `<div class="row"><span>${d.bundleRow(bName)}</span><b>${dh>0?`<span class="strike">${fmt(hSub)}</span>`:""}${fmt(hSubD)}</b></div>`;
+      if(pName) rows += `<div class="row"><span>${d.pkgRow(pName)}</span><b>${dh>0?`<span class="strike">${fmt(hPkg)}</span>`:""}${fmt(hPkgD)}</b></div>`;
     }
     if(products.ats){
-      rows += `<div class="row subhead"><span>ATS</span></div>`;
-      rows += `<div class="row"><span>${aName} /yr</span><b>${da>0?`<span class="strike">${fmt(aSub)}</span>`:""}${fmt(aSubD)}</b></div>`;
-      if(apName) rows += `<div class="row"><span>${apName} onboarding /yr</span><b>${da>0?`<span class="strike">${fmt(aPkg)}</span>`:""}${fmt(aPkgD)}</b></div>`;
+      rows += `<div class="row subhead"><span>${d.atsHead}</span></div>`;
+      rows += `<div class="row"><span>${d.atsRow(aName)}</span><b>${da>0?`<span class="strike">${fmt(aSub)}</span>`:""}${fmt(aSubD)}</b></div>`;
+      if(apName) rows += `<div class="row"><span>${d.atsPkgRow(apName)}</span><b>${da>0?`<span class="strike">${fmt(aPkg)}</span>`:""}${fmt(aPkgD)}</b></div>`;
     }
     return `<div class="ycard ${yrs===3?"best":""}">
-      ${yrs===3?'<div class="bestpop">Best value</div>':""}
-      <h4>${yrs} year${yrs>1?"s":""}</h4>
+      ${yrs===3?`<div class="bestpop">${d.bestValue}</div>`:""}
+      <h4>${d.yearsLbl(yrs)}</h4>
       <div class="disc">${discLbl||"&nbsp;"}</div>
       ${rows}
-      <div class="row total"><span>Per year</span><b>${fmt(yearly)}</b></div>
-      <div class="row"><span>Total ${yrs}-year contract</span><b>${fmt(contract)}</b></div>
-      ${saving>0.5?`<div class="save">You save ${fmt(saving)}</div>`:`<div class="save" style="opacity:.35">Baseline price</div>`}
+      <div class="row total"><span>${d.perYear}</span><b>${fmt(yearly)}</b></div>
+      <div class="row"><span>${d.totalContract(yrs)}</span><b>${fmt(contract)}</b></div>
+      ${saving>0.5?`<div class="save">${d.youSave(fmt(saving))}</div>`:`<div class="save" style="opacity:.35">${d.baseline}</div>`}
     </div>`;
   }).join("");
 }
 
 /* ================= PROPOSAL BUILDER UI ================= */
 function renderProp(){
+  const d = S();
   document.getElementById("yearChecks").innerHTML = [1,2,3].map((y,i)=>
-    `<span class="checkbox ${propYears[i]?"on":""}" onclick="propYears[${i}]=!propYears[${i}];renderProp()"><span class="box">✓</span>${y} year${y>1?"s":""}</span>`).join("");
+    `<span class="checkbox ${propYears[i]?"on":""}" onclick="propYears[${i}]=!propYears[${i}];renderProp()"><span class="box">✓</span>${d.yearsLbl(y)}</span>`).join("");
   document.getElementById("langChips").innerHTML =
     `<span class="checkbox ${propLang==="en"?"on":""}" onclick="propLang='en';renderProp()"><span class="box">✓</span>English</span>` +
     `<span class="checkbox ${propLang==="ar"?"on":""}" onclick="propLang='ar';renderProp()"><span class="box">✓</span>العربية</span>`;
@@ -642,8 +854,8 @@ function renderProp(){
   const btn = document.getElementById("genBtn");
   btn.disabled = !ok;
   document.getElementById("genNote").textContent = ok
-    ? "Includes: " + [products.hrms?("HRMS "+BUNDLES.find(b=>b.id===selBundle).name+(selPkg>=0?" + "+PKGS[selPkg].name:"")):null, products.ats?("ATS "+ATS_RATES[selAtsBundle].name+(selAtsPkg>=0?" + "+ATS_PKGS[selAtsPkg].name:"")):null].filter(Boolean).join("  ·  ")
-    : "Enter the client name, the offer validity date, and tick at least one contract option.";
+    ? d.genNoteIncl + [products.hrms?(d.headHrms+" — "+locB(BUNDLES.find(b=>b.id===selBundle))+(selPkg>=0?" + "+locB(PKGS[selPkg]):"")):null, products.ats?("ATS — "+ATS_RATES[selAtsBundle].name+(selAtsPkg>=0?" + "+locB(ATS_PKGS[selAtsPkg]):"")):null].filter(Boolean).join("  ·  ")
+    : d.genNoteBad;
 }
 function loadLogo(input){
   const f = input.files && input.files[0];
@@ -653,7 +865,7 @@ function loadLogo(input){
     const img = new Image();
     img.onload = () => {
       clientLogo = {data: e.target.result, w: img.width, h: img.height};
-      document.getElementById("logoDrop").innerHTML = `<img src="${e.target.result}" alt="logo"><span style="color:var(--g2)">Click to replace · logo will appear on the cover</span>`;
+      document.getElementById("logoDrop").innerHTML = `<img src="${e.target.result}" alt="logo"><span style="color:var(--g2)">${S().logoReplace}</span>`;
     };
     img.src = e.target.result;
   };
@@ -830,16 +1042,18 @@ function generateProposal(){
     if(rep.email) contactRuns.push({text:rep.email, options:{color:C.charcoal, fontSize:10}});
     sl.addText(contactRuns, {x: AR?0.7:W-3.9, y:9.9, w:3.2, h:1.0, fontFace:"Arial", ...(AR?{align:"right", rtlMode:true}:{align:"left"})});
 
-    // social icons with hyperlinks
-    const icons = [
-      rep.linkedin ? {data:ICON_LINKEDIN, url:rep.linkedin} : null,
-      rep.whatsapp ? {data:ICON_WHATSAPP, url:rep.whatsapp} : null,
-      rep.email    ? {data:ICON_EMAIL,    url:"mailto:"+rep.email} : null,
+    // social links as native PowerPoint shapes with hyperlinks (no embedded images)
+    const chips = [
+      rep.linkedin ? {txt:"in", shape:"roundRect", color:"0A66C2", url:rep.linkedin,        bold:true,  fs:10} : null,
+      rep.whatsapp ? {txt:"✆", shape:"ellipse",   color:"25D366", url:rep.whatsapp,        bold:false, fs:12} : null,
+      rep.email    ? {txt:"✉", shape:"roundRect", color:C.purple, url:"mailto:"+rep.email, bold:false, fs:12} : null,
     ].filter(Boolean);
     const isz = 0.26, gap = 0.12;
-    let ix = AR ? (0.7 + 3.2 - (icons.length*isz + (icons.length-1)*gap)) : (W-3.9);
-    icons.forEach(ic=>{
-      sl.addImage({data:ic.data, x:ix, y:10.95, w:isz, h:isz, hyperlink:{url:ic.url}});
+    let ix = AR ? (0.7 + 3.2 - (chips.length*isz + (chips.length-1)*gap)) : (W-3.9);
+    chips.forEach(c=>{
+      sl.addText([{text:c.txt, options:{hyperlink:{url:c.url}, color:C.white, bold:c.bold, fontSize:c.fs, underline:false}}],
+        {shape:c.shape, x:ix, y:10.95, w:isz, h:isz, fill:{color:c.color}, line:{type:"none"},
+         align:"center", valign:"middle", fontFace:"Arial", margin:0, rectRadius:0.05});
       ix += isz + gap;
     });
 
@@ -899,14 +1113,13 @@ function saveSettings(){
 function resetSettings(){ disc = JSON.parse(JSON.stringify(DEFAULT_DISC)); persistDisc(); closeSettings(); render(); }
 
 /* ================= INIT ================= */
-(function initPropFields(){
-  document.getElementById("payTerms").innerHTML = PAY_TERMS.map((p,i)=>`<option value="${i}">${p.en}</option>`).join("");
-  const d = new Date(); d.setDate(d.getDate()+30);
+(function init(){
+  const dt = new Date(); dt.setDate(dt.getDate()+30);
   const pad = v => String(v).padStart(2,"0");
-  document.getElementById("validUntil").value = d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
-  loadTeam();
+  document.getElementById("validUntil").value = dt.getFullYear()+"-"+pad(dt.getMonth()+1)+"-"+pad(dt.getDate());
+  setLang(uiLang);   // applies static text, fills selects, renders
+  loadTeam();        // may re-fill rep select when the sheet loads
 })();
-render();
 </script>
 </body>
 </html>
