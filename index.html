@@ -395,15 +395,15 @@ const PKG_PRICES = [
   [6500, 15800, 22500],[7500, 17200, 24400],[7800, 17700, 25200],[7700, 17600, 25000],
 ];
 const BUNDLES = [
-  {id:"essential", tag:"Core HR", tagAr:"الأساسيات", name:"Essential", nameAr:"الباقة الأساسية",
+  {id:"essential", tag:"Core HR", tagAr:"الأساسيات", name:"Essential", nameAr:"الاساسية",
    feats:["Employee self service","Time off & attendance (incl. regularisation)","Payroll & WPS (Mudad)","Employee onboarding & offboarding","Work & loan requests","AI reports"],
    featsAr:["الخدمة الذاتية للموظفين","الإجازات والحضور (مع تصحيح الحضور)","مسير الرواتب وحماية الأجور (مُدد)","تهيئة الموظفين وإنهاء الخدمة","طلبات العمل والسلف","تقارير بالذكاء الاصطناعي"]},
-  {id:"premium", tag:"Smart Operations", tagAr:"عمليات ذكية", name:"Premium", nameAr:"الباقة الاحترافية",
+  {id:"premium", tag:"Smart Operations", tagAr:"عمليات ذكية", name:"Premium", nameAr:"الشاملة",
    feats:["Everything in Essential","Performance management (180° & 360°)","Muqeem & Mudad integration","Health & perks","Custom requests & fields","Custom SIF"],
-   featsAr:["كل مميزات الباقة الأساسية","إدارة الأداء (180° و360°)","التكامل مع مقيم ومُدد","الصحة والمزايا","الطلبات والحقول المخصصة","ملف SIF مخصص"]},
-  {id:"enterprise", tag:"Complete Suite", tagAr:"الباقة الكاملة", name:"Enterprise", nameAr:"باقة الأعمال",
+   featsAr:["كل مميزات الاساسية","إدارة الأداء (180° و360°)","التكامل مع مقيم ومُدد","الصحة والمزايا","الطلبات والحقول المخصصة","ملف SIF مخصص"]},
+  {id:"enterprise", tag:"Complete Suite", tagAr:"الباقة الكاملة", name:"Enterprise", nameAr:"الاحترافية",
    feats:["Everything in Premium","2-factor authentication","Surveys & engagement","Bayzat AI (Knowledge Hub)","Accounting integrations","Custom reports"],
-   featsAr:["كل مميزات الباقة الاحترافية","المصادقة الثنائية","الاستبيانات والتفاعل","بيزات AI (مركز المعرفة)","التكامل مع أنظمة المحاسبة","تقارير مخصصة"]},
+   featsAr:["كل مميزات الشاملة","المصادقة الثنائية","الاستبيانات والتفاعل","بيزات AI (مركز المعرفة)","التكامل مع أنظمة المحاسبة","تقارير مخصصة"]},
 ];
 const PKGS = [
   {id:0, tag:"Self-Service Plus", tagAr:"خدمة ذاتية موسّعة", name:"Bronze", nameAr:"الباقة البرونزية",
@@ -434,12 +434,12 @@ const CMP = [
    Offered on Premium and Enterprise bundles only. Not contract-discounted. */
 const STUDIO_APP_FEE = 100;          // SAR per app per month, billed by Finance
 const STUDIO = [
-  {id:0, pct:17.5, name:"Studio Standard", nameAr:"ستوديو ستاندرد", tag:"Self-service", tagAr:"خدمة ذاتية",
+  {id:0, pct:17.5, name:"Studio Standard", nameAr:"ستديو الاساسية", tag:"Self-service", tagAr:"خدمة ذاتية",
    feats:["Workflows — 60+ triggers, 35+ actions, no code","Service Desk — submit, track and resolve every request","Task Manager","19 pre-built automation templates","No technical help required"],
    featsAr:["مسارات العمل — أكثر من 60 مُشغّل و35 إجراء بدون كود","مكتب الخدمة — تقديم الطلبات ومتابعتها وحلّها","إدارة المهام","19 قالب أتمتة جاهز","بدون حاجة لدعم تقني"]},
-  {id:1, pct:25, name:"Studio Advanced", nameAr:"ستوديو أدفانسد", tag:"Customisation", tagAr:"تخصيص",
+  {id:1, pct:25, name:"Studio Advanced", nameAr:"ستديو المتقدة", tag:"Customisation", tagAr:"تخصيص",
    feats:["Everything in Studio Standard","Bayzat Applications — build custom apps with AI","API integrations — 100+ APIs, Slack & Google, webhooks","Unlocks custom builds scoped with Solutions Engineering"],
-   featsAr:["كل مميزات ستوديو ستاندرد","تطبيقات بيزات — ابنِ تطبيقاتك بالذكاء الاصطناعي","تكاملات API — أكثر من 100 واجهة، مع سلاك وجوجل","يفتح التطوير المخصص بإشراف فريق هندسة الحلول"]},
+   featsAr:["كل مميزات ستديو الاساسية","تطبيقات بيزات — ابنِ تطبيقاتك بالذكاء الاصطناعي","تكاملات API — أكثر من 100 واجهة، مع سلاك وجوجل","يفتح التطوير المخصص بإشراف فريق هندسة الحلول"]},
 ];
 const studioEligible = () => products.hrms && (selBundle === "premium" || selBundle === "enterprise");
 /* % of the Enterprise annual for this headcount, rounded to the nearest SAR 100 */
@@ -614,13 +614,13 @@ const UI = {
     atsBundlesTitle:'<em>التوظيف</em> — اختر باقتك', atsBundlesSub:"السعر يعتمد على عدد الموظفين وعدد التوظيفات المستهدفة وتركيبة القوى العاملة. جميع الأسعار بالريال سنويًا، غير شاملة الضريبة.",
     atsCmpSummary:"قارن جميع مميزات نظام التوظيف",
     atsPkgsTitle:'<em>التوظيف</em> — باقات التهيئة والتدريب', atsPkgsSub:"الباقة البرونزية مشمولة. الفضية والذهبية تُدفعان سنويًا وتنطبق عليهما خصومات العقود الطويلة.",
-    studioTitle:'<em>بيزات ستوديو</em> — نظامك بقواعدك',
-    studioSub:"إضافة اختيارية مع الباقة الاحترافية وباقة الأعمال. سعرها محسوب من سعر باقة الأعمال لنفس عدد الموظفين.",
-    studioPct:p=>`${p}% من سعر باقة الأعمال السنوي`,
-    studioLockedTitle:"متاحة مع الباقة الاحترافية وباقة الأعمال",
-    studioLocked:"بيزات ستوديو ما تنباع مع الباقة الأساسية. اختر الباقة الاحترافية أو باقة الأعمال فوق عشان تضيفها.",
+    studioTitle:'<em>بيزات ستديو</em> — نظامك بقواعدك',
+    studioSub:"إضافة اختيارية مع الشاملة والاحترافية. سعرها محسوب من سعر الاحترافية لنفس عدد الموظفين.",
+    studioPct:p=>`${p}% من سعر الاحترافية السنوي`,
+    studioLockedTitle:"متاحة مع الشاملة والاحترافية",
+    studioLocked:"بيزات ستديو ما تنباع مع الاساسية. اختر الشاملة أو الاحترافية فوق عشان تضيفها.",
     studioFootnote:f=>`التطوير المخصص يُسعّر بشكل منفصل بساعات فريق هندسة الحلول. وتُطبَّق رسوم صيانة ${f} ريال لكل تطبيق شهريًا على تطبيقات بيزات.`,
-    lblStudio:"بيزات ستوديو", studioRow:n=>`${n} /سنة`, studioHead:"بيزات ستوديو",
+    lblStudio:"بيزات ستديو", studioRow:n=>`${n} /سنة`, studioHead:"بيزات ستديو",
     calcTitle:"احسبها صح", calcSub:"سنة أو سنتين أو ثلاث — جنبًا إلى جنب. كل ما طال التزامك، انخفض سعرك.",
     lblProducts:"المنتجات", lblHrmsBundle:"باقة الموارد البشرية", lblHrmsPkg:"باقة الدعم", lblAtsBundle:"باقة التوظيف", lblAtsPkg:"باقة التهيئة",
     propTitle:"جهّز عرض السعر", propSub:"يعتمد على اختياراتك أعلاه، وينزّل ملف ‎.pptx — ارفعه على Google Drive وافتحه بـ Google Slides للتعديل.",
@@ -1074,8 +1074,8 @@ const T = {
     vat:"الأسعار لا تشمل الضريبة.", hrmsRow:"نظام إدارة الموارد البشرية من بيزات", atsRow:"نظام تتبع المتقدمين من بيزات (ATS)",
     accounts:(n,r)=>`${n} حساب (${r} ريال للحساب شهريًا)`, flatAcc:n=>`${n} حساب — اشتراك سنوي ثابت`,
     inclBundle:b=>`شامل جميع مميزات ${b}`, svcRow:"باقة الدعم والخدمات", onbRow:"باقة التهيئة والتدريب",
-    studioRow:"بيزات ستوديو", studioDesc:p=>`اشتراك سنوي — ${p}% من سعر باقة الأعمال`,
-    studioTitle:t=>`بيزات ستوديو — ${t}`,
+    studioRow:"بيزات ستديو", studioDesc:p=>`اشتراك سنوي — ${p}% من سعر الاحترافية`,
+    studioTitle:t=>`بيزات ستديو — ${t}`,
     includedFree:"مشمولة",
     seNote:"التطوير المخصص يُحدَّد نطاقه مع فريق هندسة الحلول ويُسعّر بشكل منفصل.",
     appFee:f=>`تطبيقات بيزات عليها رسوم صيانة ${f} ريال لكل تطبيق شهريًا.`,
