@@ -208,9 +208,19 @@
       <div class="note" id="bandNote"></div>
     </div>
     <div class="inp ats-only">
+      <label id="lblWc">% white collar</label>
+      <input type="number" id="wcPct" value="30" min="0" max="100" oninput="render()">
+      <div class="note" id="wcNote"></div>
+    </div>
+    <div class="inp ats-only">
       <label id="lblRec">Recruiters / HR in hiring</label>
       <input type="number" id="recruiters" value="3" min="0" oninput="render()">
       <div class="note" id="recNote"></div>
+    </div>
+    <div class="inp ats-only">
+      <label id="lblHires">Target hires (next 12 months)</label>
+      <input type="number" id="targetHires" value="10" min="0" oninput="render()">
+      <div class="note" id="hiresNote"></div>
     </div>
   </div>
 
@@ -328,16 +338,13 @@
       <label id="lblY3">3 years</label><input type="number" id="h3" min="0" max="100" step="0.5"><input type="number" id="a3" min="0" max="100" step="0.5">
     </div>
     <div class="set-sep"></div>
-    <h4 class="set-h4" id="atsCfgTitle">ATS inputs</h4>
-    <p class="set-p" id="atsCfgDesc">Not shown on the client-facing page. Used to price the ATS bundles.</p>
+    <h4 class="set-h4" id="implTitle">Implementation fee</h4>
+    <p class="set-p" id="implDesc">One-time HRMS fee, charged in the first year only. Controlled separately — the contract-length discounts above never apply to it.</p>
     <div class="set-grid2">
-      <label id="lblWc">% white collar</label>
-      <input type="number" id="wcPct" min="0" max="100" oninput="cfgNotes()">
-      <label id="lblHires">Target hires (next 12 months)</label>
-      <input type="number" id="targetHires" min="0" oninput="cfgNotes()">
+      <label id="lblImplDisc">Implementation discount (%)</label>
+      <input type="number" id="implDisc" min="0" max="100" step="0.5" oninput="cfgNotes()">
     </div>
-    <div class="note set-note" id="wcNote"></div>
-    <div class="note set-note" id="hiresNote"></div>
+    <div class="note set-note" id="implNote"></div>
     <button class="btn" id="saveBtn" onclick="saveSettings()">Save</button>
     <button class="reset" id="resetBtn" onclick="resetSettings()">Reset to defaults (HRMS 0/5/10 · ATS 0/10/20)</button>
   </div>
@@ -397,6 +404,8 @@ const BUNDLE_RATES = {
   premium:    {flat:[4500,6500], pupm:[17,16,14,13,11,10,9]},
   enterprise: {flat:[5000,7000], pupm:[20,19,16,15,12,11,10]},
 };
+/* One-time HRMS implementation fee, by employee band (indexes match BANDS). */
+const IMPL_FEES = [1000, 2000, 3000, 5000, 5000, 10000, 10000, 20000, 20000];
 const PKG_PRICES = [
   [700, 1100, null],[600, 1300, 2100],[1100, 1800, 2500],[3300, 5500, 8600],[4400, 9000, 13400],
   [6500, 15800, 22500],[7500, 17200, 24400],[7800, 17700, 25200],[7700, 17600, 25000],
@@ -593,7 +602,11 @@ const UI = {
     genNoteIncl:"Includes: ",
     footerText:"Bayzat KSA pricing — Q1 2026 rate charts (HRMS &amp; ATS). Billed annually in SAR, excluding VAT. HRMS service packages replace one-time implementation fees; ATS onboarding packages billed yearly. AI CV credits &amp; note-taking beyond included allowance are usage-based (SAR 2,000 / 10,000 CVs · SAR 1,600 / 100 hrs). Multi-year discounts apply to bundles and packages and are configurable in admin settings.",
     modalTitle:"Admin settings", modalDesc:"Contract-length discounts (%). Applied to bundles and service packages of each product in the calculator and proposals.",
-    atsCfgTitle:"ATS inputs", atsCfgDesc:"Not shown on the client-facing page. Used to price the ATS bundles.",
+    implTitle:"Implementation fee",
+    implDesc:"One-time HRMS fee, first year only. 2-year agreements get 50% off automatically and 3-year agreements are free. Any discount below stacks on top of that.",
+    lblImplDisc:"Implementation discount (%)",
+    implNote:(g,net)=>`This team size: ${g}${g!==net?` → ${net}`:""} on a 1-year deal · 2 years −50% · 3 years free`,
+    implRow:"Implementation (one-time)", implWaived:"Waived",
     headHrms:"HRMS", headAts:"ATS", saveBtn:"Save", resetBtn:"Reset to defaults (HRMS 0/5/10 · ATS 0/10/20)",
     yearsLbl:y=>y+" year"+(y>1?"s":""), mostPopular:"Most popular", suggested:"Suggested for your team",
     selected:"Selected", choose:"Choose plan", none:"None", perYr:" /year", perUser:" /employee/month",
@@ -640,7 +653,11 @@ const UI = {
     genNoteIncl:"يشمل: ",
     footerText:"أسعار بيزات السعودية — جداول أسعار الربع الأول 2026 (الموارد البشرية والتوظيف). تُدفع سنويًا بالريال السعودي، غير شاملة الضريبة. باقات الدعم والخدمات تحل محل رسوم التنفيذ لمرة واحدة، وباقات تهيئة نظام التوظيف تُدفع سنويًا. رصيد الذكاء الاصطناعي للسير الذاتية والتدوين الذكي بعد الحد المشمول يُحسب حسب الاستخدام (2,000 ريال / 10,000 سيرة ذاتية · 1,600 ريال / 100 ساعة). خصومات العقود المتعددة السنوات تنطبق على الباقات ويمكن ضبطها من إعدادات المسؤول.",
     modalTitle:"إعدادات المسؤول", modalDesc:"خصومات مدة العقد (%). تُطبق على باقات كل منتج في الحاسبة وعروض الأسعار.",
-    atsCfgTitle:"مدخلات نظام التوظيف", atsCfgDesc:"ما تظهر للعميل في الصفحة. تُستخدم لتسعير باقات التوظيف.",
+    implTitle:"رسوم التنفيذ",
+    implDesc:"رسوم لمرة واحدة على نظام الموارد البشرية، في السنة الأولى فقط. عقود السنتين عليها خصم 50% تلقائيًا، وعقود الثلاث سنوات مجانية. وأي خصم تحته يُضاف فوق ذلك.",
+    lblImplDisc:"خصم رسوم التنفيذ (%)",
+    implNote:(g,net)=>`لهذا الحجم: ${g}${g!==net?` ← ${net}`:""} لعقد سنة · سنتين −50% · ثلاث سنوات مجانًا`,
+    implRow:"رسوم التنفيذ (لمرة واحدة)", implWaived:"معفاة",
     headHrms:"الموارد البشرية", headAts:"التوظيف", saveBtn:"حفظ", resetBtn:"إعادة الضبط الافتراضي (الموارد البشرية 0/5/10 · التوظيف 0/10/20)",
     yearsLbl:y=>y===1?"سنة":y===2?"سنتين":y+" سنوات", mostPopular:"الأكثر اختيارًا", suggested:"مقترحة لفريقك",
     selected:"مختارة", choose:"اختر الباقة", none:"بدون", perYr:" /سنة", perUser:" /موظف/شهر",
@@ -678,9 +695,9 @@ const PAY_TERMS = [
 
 /* ================= STATE ================= */
 const DEFAULT_DISC = {hrms:[0,5,10], ats:[0,10,20]};
-const DEFAULT_ATS_CFG = {wcPct:30, hires:10};      // admin-only ATS pricing inputs
+const DEFAULT_IMPL_DISC = 0;                       // implementation discount is controlled on its own
 let disc = loadDisc();
-let atsCfg = loadAtsCfg();
+let implDisc = loadImplDisc();
 let products = {hrms:true, ats:false};
 let selBundle = "premium";
 let selPkg = 1;
@@ -693,8 +710,16 @@ let clientLogo = null;                   // {data, w, h}
 let uiLang = loadLang();
 function loadDisc(){ try{const s=localStorage.getItem("bz_ksa_disc_v2"); if(s){const d=JSON.parse(s); if(d&&d.hrms&&d.ats) return d;}}catch(e){} return JSON.parse(JSON.stringify(DEFAULT_DISC)); }
 function persistDisc(){ try{localStorage.setItem("bz_ksa_disc_v2", JSON.stringify(disc));}catch(e){} }
-function loadAtsCfg(){ try{const s=localStorage.getItem("bz_ksa_atscfg"); if(s){const c=JSON.parse(s); if(c&&typeof c.wcPct==="number"&&typeof c.hires==="number") return c;}}catch(e){} return Object.assign({}, DEFAULT_ATS_CFG); }
-function persistAtsCfg(){ try{localStorage.setItem("bz_ksa_atscfg", JSON.stringify(atsCfg));}catch(e){} }
+function loadImplDisc(){ try{const s=localStorage.getItem("bz_ksa_impldisc"); if(s!==null){const v=parseFloat(s); if(isFinite(v)) return Math.min(100,Math.max(0,v));}}catch(e){} return DEFAULT_IMPL_DISC; }
+function persistImplDisc(){ try{localStorage.setItem("bz_ksa_impldisc", String(implDisc));}catch(e){} }
+/* Implementation is waived down automatically as the contract lengthens:
+   1 year full price, 2 years half, 3 years free. The admin discount stacks on top. */
+const IMPL_TERM_DISC = [0, 50, 100];      // % off for 1 / 2 / 3-year agreements
+function implFee(n){ return products.hrms ? IMPL_FEES[bandIndex(n)] : 0; }
+function implFeeNet(n, yearIdx){
+  const term = IMPL_TERM_DISC[Math.max(0, Math.min(2, yearIdx|0))] / 100;
+  return Math.round(implFee(n) * (1 - term) * (1 - implDisc/100));
+}
 function loadLang(){ try{const l=localStorage.getItem("bz_ksa_lang"); if(l==="ar"||l==="en") return l;}catch(e){} return "en"; }
 
 /* ================= HELPERS ================= */
@@ -724,8 +749,10 @@ function atsPkgAnnual(){ return selAtsPkg>=0 ? ATS_PKGS[selAtsPkg].price : 0; }
 function recommendAts(rec){ return rec<=2 ? "rpro" : (rec<=10 ? "teams" : "tpro"); }
 function getInputs(){
   let n = parseInt(document.getElementById("empCount").value) || 1; if(n<1) n=1;
+  let pct = Math.min(100, Math.max(0, parseFloat(document.getElementById("wcPct").value)||0));
   let rec = Math.max(0, parseInt(document.getElementById("recruiters").value)||0);
-  return {n, pct: atsCfg.wcPct, rec, hires: atsCfg.hires};   // pct + hires come from Admin settings
+  let hires = Math.max(0, parseInt(document.getElementById("targetHires").value)||0);
+  return {n, pct, rec, hires};
 }
 
 /* ================= LANGUAGE ================= */
@@ -764,7 +791,7 @@ function applyStatic(){
   set("footerText", d.footerText, true);
   set("modalTitle", d.modalTitle); set("modalDesc", d.modalDesc);
   set("headHrms", d.headHrms); set("headAts", d.headAts);
-  set("atsCfgTitle", d.atsCfgTitle); set("atsCfgDesc", d.atsCfgDesc);
+  set("implTitle", d.implTitle); set("implDesc", d.implDesc); set("lblImplDisc", d.lblImplDisc);
   set("lblY1", d.yearsLbl(1)); set("lblY2", d.yearsLbl(2)); set("lblY3", d.yearsLbl(3));
   set("saveBtn", d.saveBtn); set("resetBtn", d.resetBtn);
   document.getElementById("clientName").placeholder = d.clientPh;
@@ -843,7 +870,11 @@ function render(){
   document.querySelectorAll(".ats-only").forEach(el=>el.classList.toggle("hidden", !products.ats));
 
   document.getElementById("bandNote").textContent = d.bandNote(BANDS[bi].label);
-  if(products.ats) document.getElementById("recNote").textContent = d.recNote(ATS_RATES[recommendAts(rec)].name);
+  if(products.ats){
+    document.getElementById("wcNote").textContent = d.wcNote((uiLang==="ar"?WC_TIERS_AR:WC_TIERS)[wcTier(pct)]);
+    document.getElementById("recNote").textContent = d.recNote(ATS_RATES[recommendAts(rec)].name);
+    document.getElementById("hiresNote").textContent = d.hiresNote(hires);
+  }
   cfgNotes();
   if(selPkg===2 && PKG_PRICES[bi][2]===null) selPkg = 1;
   if(!studioEligible()) selStudio = -1;              // Studio is Premium/Enterprise only
@@ -986,6 +1017,7 @@ function renderCalc(n, pct, hires){
   const aSub = products.ats ? atsAnnual(selAtsBundle, pct, n, hires) : 0;
   const aPkg = products.ats ? atsPkgAnnual() : 0;
   const sStudio = studioAnnual(selStudio, n);                 // list price — never discounted
+  const impl    = implFee(n);                                 // one-time, first year only
   const sName = selStudio>=0 ? locB(STUDIO[selStudio]) : null;
   const bName = locB(BUNDLES.find(b=>b.id===selBundle));
   const pName = selPkg>=0 ? locB(PKGS[selPkg]) : null;
@@ -996,8 +1028,9 @@ function renderCalc(n, pct, hires){
   document.getElementById("yearCards").innerHTML = [1,2,3].map((yrs,i)=>{
     const dh = disc.hrms[i]/100, da = disc.ats[i]/100;
     const hSubD=hSub*(1-dh), hPkgD=hPkg*(1-dh), aSubD=aSub*(1-da), aPkgD=aPkg*(1-da);
+    const implNet = implFeeNet(n, i);                          // 1yr full · 2yr −50% · 3yr free
     const yearly = hSubD+hPkgD+aSubD+aPkgD+sStudio, contract = yearly*yrs;
-    const saving = (base1 - yearly) * yrs;
+    const saving = (base1 - yearly) * yrs + (impl - implNet);
     const discLbl = [products.hrms&&disc.hrms[i]>0?d.discOff(disc.hrms[i], d.headHrms):null, products.ats&&disc.ats[i]>0?d.discOff(disc.ats[i], d.headAts):null].filter(Boolean).join(" · ");
     let rows = `<div class="row"><span>${d.employees}</span><b>${n}</b></div>`;
     if(products.hrms){
@@ -1017,7 +1050,8 @@ function renderCalc(n, pct, hires){
       <div class="disc">${discLbl||"&nbsp;"}</div>
       ${rows}
       <div class="row total"><span>${d.perYear}</span><b>${fmt(yearly)}</b></div>
-      <div class="row"><span>${d.totalContract(yrs)}</span><b>${fmt(contract)}</b></div>
+      ${impl>0?`<div class="row"><span>${d.implRow}</span><b>${implNet<impl?`<span class="strike">${fmt(impl)}</span>`:""}${implNet===0?d.implWaived:fmt(implNet)}</b></div>`:""}
+      <div class="row"><span>${d.totalContract(yrs)}</span><b>${fmt(contract+implNet)}</b></div>
       ${saving>0.5?`<div class="save">${d.youSave(fmt(saving))}</div>`:`<div class="save" style="opacity:.35">${d.baseline}</div>`}
     </div>`;
   }).join("");
@@ -1066,6 +1100,8 @@ const T = {
     studioRow:"Bayzat Studio", studioDesc:()=>"Annual subscription",
     studioTitle:t=>`Bayzat Studio — ${t}`,
     includedFree:"Included",
+    implRow:"Implementation & Setup", implDesc:"One-time fee, first year only", oneTime:"one-time", implWaived:"Waived",
+    implUpfront:"Payment split applies to the annual subscription only; implementation is paid upfront.",
     seNote:"Custom builds are scoped with Solutions Engineering and quoted separately.",
     appFee:f=>`Bayzat apps carry a maintenance fee of SAR ${f} per app per month.`,
     included:"WHAT'S INCLUDED", hrmsTitle:b=>`HRMS — ${b} bundle`, atsTitle:b=>`ATS — ${b}`,
@@ -1084,6 +1120,8 @@ const T = {
     studioRow:"بيزات ستديو", studioDesc:()=>"اشتراك سنوي",
     studioTitle:t=>`بيزات ستديو — ${t}`,
     includedFree:"مشمولة",
+    implRow:"رسوم التنفيذ والتهيئة", implDesc:"رسوم لمرة واحدة، في السنة الأولى فقط", oneTime:"لمرة واحدة", implWaived:"معفاة",
+    implUpfront:"التقسيط ينطبق على الاشتراك السنوي فقط، ورسوم التنفيذ تُدفع مقدمًا.",
     seNote:"التطوير المخصص يُحدَّد نطاقه مع فريق هندسة الحلول ويُسعّر بشكل منفصل.",
     appFee:f=>`تطبيقات بيزات عليها رسوم صيانة ${f} ريال لكل تطبيق شهريًا.`,
     included:"تفاصيل الباقات المختارة", hrmsTitle:b=>`الموارد البشرية — ${b}`, atsTitle:b=>`إدارة التوظيف — ${b}`,
@@ -1123,6 +1161,7 @@ function generateProposal(){
   const studio  = selStudio>=0 && studioEligible() ? STUDIO[selStudio] : null;
   const sStudio = studio ? studioAnnual(selStudio, n) : 0;   // list price, no contract discount
   const pupm = bundlePUPM(selBundle, n);
+  const impl = implFee(n);                       // one-time HRMS implementation fee
 
   const pres = new PptxGenJS();
   pres.defineLayout({name:"A4P", width:8.27, height:11.69});
@@ -1175,6 +1214,7 @@ function generateProposal(){
   years.forEach(yrs=>{
     const i = yrs-1;
     const dh = disc.hrms[i]/100, da = disc.ats[i]/100;
+    const implNet = implFeeNet(n, i);            // 1yr full · 2yr −50% · 3yr free
     const sl = pres.addSlide();
     sl.background = {color:C.white};
     // header
@@ -1184,86 +1224,95 @@ function generateProposal(){
 
     // table rows
     const rows = [];
-    const hdrOpts = {fill:{color:C.charcoal}, color:C.white, bold:true, fontSize:12, valign:"middle"};
+    const hdrOpts = {fill:{color:C.charcoal}, color:C.white, bold:true, fontSize:11, valign:"middle"};
     const dCell = (runs) => ({text: runs, options:{valign:"middle", ...(AR?{align:"right", rtlMode:true}:{align:"left"})}});
     // struck original sits on its own line ABOVE the live price, both centred on one axis
     const pCell = (orig, discd, unit, d) => ({text: [
-        ...(d>0 ? [{text: fmtN(orig), options:{strike:true, color:C.g3, fontSize:10, breakLine:true}}] : []),
-        {text: fmtN(discd), options:{bold:true, color:C.purple, fontSize:16, breakLine:true}},
-        {text: unit, options:{color:C.g3, fontSize:8.5}},
+        ...(d>0 ? [{text: fmtN(orig), options:{strike:true, color:C.g3, fontSize:9, breakLine:true}}] : []),
+        {text: fmtN(discd), options:{bold:true, color:C.purple, fontSize:14, breakLine:true}},
+        {text: unit, options:{color:C.g3, fontSize:8}},
       ], options:{align:"center", valign:"middle"}});
     const head = [{text:L.details, options:{...hdrOpts, ...(AR?{align:"right", rtlMode:true}:{})}},{text:L.price, options:{...hdrOpts, align:"center"}}];
     rows.push(head);
 
     if(products.hrms){
       const desc = pupm===null ? L.flatAcc(n) : L.accounts(n, pupm);
-      const r = [ dCell([{text:L.hrmsRow+"\n", options:{bold:true, fontSize:12, color:C.charcoal}},
-                         {text:desc+"\n", options:{fontSize:10, color:C.g3}},
-                         {text:L.inclBundle(AR?bundle.nameAr:bundle.name+""), options:{fontSize:10, color:C.g3}}]),
+      const r = [ dCell([{text:L.hrmsRow+"\n", options:{bold:true, fontSize:11, color:C.charcoal}},
+                         {text:desc+"\n", options:{fontSize:9, color:C.g3}},
+                         {text:L.inclBundle(AR?bundle.nameAr:bundle.name+""), options:{fontSize:9, color:C.g3}}]),
                   pCell(hSub, hSub*(1-dh), L.perYear, dh) ];
       rows.push(r);
       if(pkg){
-        rows.push([ dCell([{text:L.svcRow+" — "+(AR?pkg.nameAr:pkg.name)+"\n", options:{bold:true, fontSize:12, color:C.charcoal}},
-                           {text:(AR?pkg.featsAr[0]:pkg.feats[0]), options:{fontSize:10, color:C.g3}}]),
+        rows.push([ dCell([{text:L.svcRow+" — "+(AR?pkg.nameAr:pkg.name)+"\n", options:{bold:true, fontSize:11, color:C.charcoal}},
+                           {text:(AR?pkg.featsAr[0]:pkg.feats[0]), options:{fontSize:9, color:C.g3}}]),
                     pCell(hPkg, hPkg*(1-dh), L.perYear, dh) ]);
       }
     }
     if(studio){
-      rows.push([ dCell([{text:L.studioRow+" — "+(AR?studio.nameAr:studio.name)+"\n", options:{bold:true, fontSize:12, color:C.charcoal}},
-                         {text:L.studioDesc(studio.pct)+"\n", options:{fontSize:10, color:C.g3}},
-                         {text:(AR?studio.featsAr[0]:studio.feats[0]), options:{fontSize:10, color:C.g3}}]),
+      rows.push([ dCell([{text:L.studioRow+" — "+(AR?studio.nameAr:studio.name)+"\n", options:{bold:true, fontSize:11, color:C.charcoal}},
+                         {text:L.studioDesc(studio.pct)+"\n", options:{fontSize:9, color:C.g3}},
+                         {text:(AR?studio.featsAr[0]:studio.feats[0]), options:{fontSize:9, color:C.g3}}]),
                   pCell(sStudio, sStudio, L.perYear, 0) ]);
     }
     if(products.ats){
-      rows.push([ dCell([{text:L.atsRow+"\n", options:{bold:true, fontSize:12, color:C.charcoal}},
-                         {text:L.inclBundle((AR?"باقة ":"")+atsB.name), options:{fontSize:10, color:C.g3}}]),
+      rows.push([ dCell([{text:L.atsRow+"\n", options:{bold:true, fontSize:11, color:C.charcoal}},
+                         {text:L.inclBundle((AR?"باقة ":"")+atsB.name), options:{fontSize:9, color:C.g3}}]),
                   pCell(aSub, aSub*(1-da), L.perYear, da) ]);
       if(atsP){
         const pkgPrice = aPkg>0
           ? pCell(aPkg, aPkg*(1-da), L.perYear, da)
-          : {text:[{text:L.includedFree, options:{bold:true, color:C.purple, fontSize:13}}], options:{align:"center", valign:"middle"}};
-        rows.push([ dCell([{text:L.onbRow+" — "+(AR?atsP.nameAr:atsP.name)+"\n", options:{bold:true, fontSize:12, color:C.charcoal}},
-                           {text:(AR?atsP.featsAr[0]:atsP.feats[0]), options:{fontSize:10, color:C.g3}}]),
+          : {text:[{text:L.includedFree, options:{bold:true, color:C.purple, fontSize:12}}], options:{align:"center", valign:"middle"}};
+        rows.push([ dCell([{text:L.onbRow+" — "+(AR?atsP.nameAr:atsP.name)+"\n", options:{bold:true, fontSize:11, color:C.charcoal}},
+                           {text:(AR?atsP.featsAr[0]:atsP.feats[0]), options:{fontSize:9, color:C.g3}}]),
                     pkgPrice ]);
       }
+    }
+    // one-time implementation fee, charged in the first year only — never spread over the contract
+    if(impl>0){
+      rows.push([ dCell([{text:L.implRow+"\n", options:{bold:true, fontSize:11, color:C.charcoal}},
+                         {text:L.implDesc, options:{fontSize:9, color:C.g3}}]),
+                  implNet===0
+                    ? {text:[{text:L.implWaived, options:{bold:true, color:C.purple, fontSize:12}}], options:{align:"center", valign:"middle"}}
+                    : pCell(impl, implNet, L.oneTime, impl>implNet?1:0) ]);
     }
     const fullY = hSub+hPkg+aSub+aPkg+sStudio;
     const discY = (hSub+hPkg)*(1-dh) + (aSub+aPkg)*(1-da) + sStudio;   // Studio not discounted
     rows.push([
-      {text:L.total(yrs), options:{bold:true, fontSize:14, color:C.charcoal, fill:{color:C.lav}, valign:"middle", ...(AR?{align:"right", rtlMode:true}:{align:"left"})}},
-      {text:[ ...(fullY*yrs-discY*yrs>0.5 ? [{text:fmtN(fullY*yrs), options:{strike:true, color:C.g3, fontSize:11, breakLine:true}}] : []),
-              {text:fmtN(discY*yrs), options:{bold:true, color:C.purple, fontSize:18, breakLine:true}},
-              {text:"SAR", options:{color:C.g3, fontSize:8.5}} ],
+      {text:L.total(yrs), options:{bold:true, fontSize:13, color:C.charcoal, fill:{color:C.lav}, valign:"middle", ...(AR?{align:"right", rtlMode:true}:{align:"left"})}},
+      {text:[ ...((fullY*yrs+impl)-(discY*yrs+implNet)>0.5 ? [{text:fmtN(fullY*yrs+impl), options:{strike:true, color:C.g3, fontSize:10, breakLine:true}}] : []),
+              {text:fmtN(discY*yrs+implNet), options:{bold:true, color:C.purple, fontSize:16, breakLine:true}},
+              {text:"SAR", options:{color:C.g3, fontSize:8}} ],
        options:{align:"center", valign:"middle", fill:{color:C.lav}}},
     ]);
 
     // In Arabic, mirror the table: price column on the left, details on the right
     const finalRows = AR ? rows.map(r=>[r[1], r[0]]) : rows;
-    const ROWH = 0.78, TBL_Y = 1.5;
+    const ROWH = 0.68, TBL_Y = 1.5;
     sl.addTable(finalRows, {x:0.7, y:TBL_Y, w:W-1.4, colW: AR? [2.0,4.87]:[4.87,2.0], border:{type:"solid", color:"DDDDDD", pt:0.75}, rowH:ROWH, fontFace:FONT, autoPage:false});
 
-    // savings + VAT + payment terms + validity
-    let yPos = TBL_Y + rows.length*ROWH + 0.34;   // sits directly under the table
-    const saving = (fullY-discY)*yrs;
+    // savings box, then the footnotes — collected first so the block can be sized to fit
+    let yPos = TBL_Y + rows.length*ROWH + 0.28;   // sits directly under the table
+    const saving = (fullY-discY)*yrs + (impl-implNet);
     if(saving>0.5){
       sl.addShape("roundRect", {x:0.7, y:yPos, w:W-1.4, h:0.55, fill:{color:C.lav}, line:{color:C.purple, dashType:"dash", pt:1}, rectRadius:0.08});
       sl.addText(L.youSave(fmtN(saving), yrs), {x:0.7, y:yPos, w:W-1.4, h:0.55, align:"center", valign:"middle", fontFace:FONT, fontSize:14, bold:true, color:C.purple, ...(AR?{rtlMode:true}:{})});
-      yPos += 0.85;
+      yPos += 0.80;
     }
-    sl.addText("●  " + L.vat, {x:0.7, y:yPos, w:W-1.4, h:0.35, fontFace:FONT, fontSize:11, color:C.g3, ...ax});
-    yPos += 0.34;
-    sl.addText("●  " + L.payTerms(AR ? PAY_TERMS[payIdx].ar : PAY_TERMS[payIdx].en), {x:0.7, y:yPos, w:W-1.4, h:0.35, fontFace:FONT, fontSize:11, color:C.g3, ...ax});
-    yPos += 0.34;
-    if(validISO){
-      sl.addText("●  " + L.validUntil(fmtValidDate(validISO, AR)), {x:0.7, y:yPos, w:W-1.4, h:0.35, fontFace:FONT, fontSize:11, color:C.g3, ...ax});
-      yPos += 0.34;
-    }
+    const notes = [L.vat, L.payTerms(AR ? PAY_TERMS[payIdx].ar : PAY_TERMS[payIdx].en)];
+    if(implNet>0 && payIdx>0) notes.push(L.implUpfront);    // split applies to subscription only
+    if(validISO)           notes.push(L.validUntil(fmtValidDate(validISO, AR)));
     if(studio){
-      sl.addText("●  " + L.appFee(STUDIO_APP_FEE), {x:0.7, y:yPos, w:W-1.4, h:0.35, fontFace:FONT, fontSize:11, color:C.g3, ...ax});
-      yPos += 0.34;
-      if(studio.id === 1)
-        sl.addText("●  " + L.seNote, {x:0.7, y:yPos, w:W-1.4, h:0.35, fontFace:FONT, fontSize:11, color:C.g3, ...ax});
+      notes.push(L.appFee(STUDIO_APP_FEE));
+      if(studio.id === 1) notes.push(L.seNote);
     }
+    // keep the whole list clear of the contact block, tightening the leading if it is long
+    const NOTES_END = 9.74;
+    const lead = 0.28;
+    const notesY = Math.min(yPos, NOTES_END - notes.length*lead);   // bottom-anchored
+    notes.forEach((t,i)=>{
+      sl.addText("●  " + t, {x:0.7, y:notesY + i*lead, w:W-1.4, h:lead, fontFace:FONT,
+        fontSize:9.5, color:C.g3, valign:"middle", margin:0, ...ax});
+    });
 
     // ---------- CONTACT BLOCK ----------
     // hairline rule, then a single left/right-aligned column: name / title / phone / email / icons
@@ -1391,36 +1440,30 @@ function deliverProposal(pres, baseName){
 function openSettings(){
   ["h1","h2","h3"].forEach((id,i)=>document.getElementById(id).value=disc.hrms[i]);
   ["a1","a2","a3"].forEach((id,i)=>document.getElementById(id).value=disc.ats[i]);
-  document.getElementById("wcPct").value = atsCfg.wcPct;
-  document.getElementById("targetHires").value = atsCfg.hires;
+  document.getElementById("implDisc").value = implDisc;
   cfgNotes();
   document.getElementById("modalBg").classList.add("open");
 }
 /* live preview of what the two admin inputs mean, without touching the page yet */
 function cfgNotes(){
-  const d = S();
-  const wc = document.getElementById("wcPct"), th = document.getElementById("targetHires");
-  if(!wc || !th) return;
-  const pct = Math.min(100, Math.max(0, parseFloat(wc.value)||0));
-  const hires = Math.max(0, parseInt(th.value)||0);
-  const wn = document.getElementById("wcNote"), hn = document.getElementById("hiresNote");
-  if(wn) wn.textContent = d.wcNote((uiLang==="ar"?WC_TIERS_AR:WC_TIERS)[wcTier(pct)]);
-  if(hn) hn.textContent = d.hiresNote(hires);
+  const el = document.getElementById("implDisc"), note = document.getElementById("implNote");
+  if(!el || !note) return;
+  const {n} = getInputs();
+  const pctv = Math.min(100, Math.max(0, parseFloat(el.value)||0));
+  const gross = products.hrms ? IMPL_FEES[bandIndex(n)] : 0;
+  note.textContent = S().implNote(fmt(gross), fmt(Math.round(gross*(1-pctv/100))));
 }
 function closeSettings(){ document.getElementById("modalBg").classList.remove("open"); }
 function saveSettings(){
   const g = id => Math.min(100, Math.max(0, parseFloat(document.getElementById(id).value)||0));
   disc = {hrms:[g("h1"),g("h2"),g("h3")], ats:[g("a1"),g("a2"),g("a3")]};
-  atsCfg = {
-    wcPct: Math.min(100, Math.max(0, parseFloat(document.getElementById("wcPct").value)||0)),
-    hires: Math.max(0, parseInt(document.getElementById("targetHires").value)||0),
-  };
-  persistDisc(); persistAtsCfg(); closeSettings(); render();
+  implDisc = Math.min(100, Math.max(0, parseFloat(document.getElementById("implDisc").value)||0));
+  persistDisc(); persistImplDisc(); closeSettings(); render();
 }
 function resetSettings(){
   disc = JSON.parse(JSON.stringify(DEFAULT_DISC));
-  atsCfg = Object.assign({}, DEFAULT_ATS_CFG);
-  persistDisc(); persistAtsCfg(); closeSettings(); render();
+  implDisc = DEFAULT_IMPL_DISC;
+  persistDisc(); persistImplDisc(); closeSettings(); render();
 }
 
 /* ================= INIT ================= */
