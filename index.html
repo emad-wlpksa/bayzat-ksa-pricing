@@ -251,6 +251,7 @@
     <h2 class="sec-title" id="atsBundlesTitle"><em>ATS</em> — choose your bundle</h2>
     <p class="sec-sub" id="atsBundlesSub">Priced by workforce profile. All prices in SAR/year, excluding VAT.</p>
     <div class="grid3" id="atsBundleCards"></div>
+    <p class="sec-sub" id="atsPaygNote" style="margin-top:18px"></p>
     <details class="compare">
       <summary id="atsCmpSummary">Compare every ATS feature</summary>
       <table class="cmp" id="atsCmpTable"></table>
@@ -412,32 +413,32 @@ const PKG_PRICES = [
 ];
 const BUNDLES = [
   {id:"essential", tag:"Core HR", tagAr:"الأساسيات", name:"Essential", nameAr:"الاساسية",
-   feats:["Employee self service","Time off & attendance (incl. regularisation)","Payroll & WPS (Mudad)","Employee onboarding & offboarding","Work & loan requests","AI reports"],
-   featsAr:["الخدمة الذاتية للموظفين","الإجازات والحضور (مع تصحيح الحضور)","مسير الرواتب وحماية الأجور (مُدد)","تهيئة الموظفين وإنهاء الخدمة","طلبات العمل والسلف","تقارير بالذكاء الاصطناعي"]},
+   feats:["Employee self service","Time off & attendance (incl. regularisation)","Payroll & WPS","GOSI integration","Employee onboarding & offboarding","Work & loan requests","AI reports"],
+   featsAr:["الخدمة الذاتية للموظفين","الإجازات والحضور (مع تصحيح الحضور)","مسير الرواتب وحماية الأجور","التكامل مع التأمينات الاجتماعية (GOSI)","تهيئة الموظفين وإنهاء الخدمة","طلبات العمل والسلف","تقارير بالذكاء الاصطناعي"]},
   {id:"premium", tag:"Smart Operations", tagAr:"عمليات ذكية", name:"Premium", nameAr:"الشاملة",
-   feats:["Self service, payroll, WPS & time off","Performance management (180° & 360°)","Muqeem & Mudad integration","Health & perks","Custom requests & fields","Custom SIF"],
-   featsAr:["الخدمة الذاتية ومسير الرواتب وحماية الأجور والإجازات","إدارة الأداء (180° و360°)","التكامل مع مقيم ومُدد","الصحة والمزايا","الطلبات والحقول المخصصة","ملف SIF مخصص"]},
+   feats:["Self service, payroll, WPS & time off","Performance management (180° & 360°)","Muqeem & Mudad integration","Health & perks","Custom SIF"],
+   featsAr:["الخدمة الذاتية ومسير الرواتب وحماية الأجور والإجازات","إدارة الأداء (180° و360°)","التكامل مع مقيم ومُدد","الصحة والمزايا","ملف SIF مخصص"]},
   {id:"enterprise", tag:"Complete Suite", tagAr:"الباقة الكاملة", name:"Enterprise", nameAr:"الاحترافية",
    feats:["Full HR, payroll & performance suite","Two-factor authentication","Surveys & engagement","Bayzat AI (Knowledge Hub)","Accounting integrations","Custom reports"],
    featsAr:["منظومة كاملة للموارد البشرية والرواتب والأداء","المصادقة الثنائية","الاستبيانات والتفاعل","بيزات AI (مركز المعرفة)","التكامل مع أنظمة المحاسبة","تقارير مخصصة"]},
 ];
 const PKGS = [
   {id:0, tag:"Self-Service Plus", tagAr:"خدمة ذاتية موسّعة", name:"Bronze", nameAr:"الباقة البرونزية",
-   feats:["Multi-channel support (4h response) during working hours","Email-based success & tech support","1 platform config/year + 5 custom reports","Recorded webinars & self-help training","Quarterly 1:1 with Customer Success + feature insights"],
-   featsAr:["دعم متعدد القنوات (استجابة خلال 4 ساعات) في أوقات العمل","دعم فني ونجاح عملاء عبر الإيميل","إعداد واحد للمنصة سنويًا + 5 تقارير مخصصة","ندوات مسجلة وتدريب ذاتي","اجتماع ربع سنوي مع فريق نجاح العملاء"]},
+   feats:["Multi-channel support (4h response) during working hours","Email-based success & tech support","1 platform configuration per year","Recorded webinars & self-help training","Quarterly 1:1 with Customer Success + feature insights"],
+   featsAr:["دعم متعدد القنوات (استجابة خلال 4 ساعات) في أوقات العمل","دعم فني ونجاح عملاء عبر الإيميل","إعداد واحد للمنصة سنويًا","ندوات مسجلة وتدريب ذاتي","اجتماع ربع سنوي مع فريق نجاح العملاء"]},
   {id:1, tag:"Managed Support", tagAr:"دعم مُدار", name:"Silver", nameAr:"الباقة الفضية",
-   feats:["Multi-channel support (2h response) during working hours","Remote Success Manager: 24h response, 3 trainings, monthly check-ins","Dedicated tech specialist + 3 platform configs/year","Live & recorded webinars, self-help, 15 custom reports","Product roadmap & feature insights"],
-   featsAr:["دعم متعدد القنوات (استجابة خلال ساعتين) في أوقات العمل","مدير نجاح عن بُعد: استجابة خلال 24 ساعة، 3 تدريبات، متابعة شهرية","مختص تقني مخصص + 3 إعدادات للمنصة سنويًا","ندوات مباشرة ومسجلة + 15 تقرير مخصص","خارطة طريق المنتج ورؤى المزايا"]},
+   feats:["Multi-channel support (2h response) during working hours","Remote Success Manager: 24h response, 3 trainings, monthly check-ins","Dedicated tech specialist + 3 platform configs/year","Live & recorded webinars and self-help","Product roadmap & feature insights"],
+   featsAr:["دعم متعدد القنوات (استجابة خلال ساعتين) في أوقات العمل","مدير نجاح عن بُعد: استجابة خلال 24 ساعة، 3 تدريبات، متابعة شهرية","مختص تقني مخصص + 3 إعدادات للمنصة سنويًا","ندوات مباشرة ومسجلة وتدريب ذاتي","خارطة طريق المنتج ورؤى المزايا"]},
   {id:2, tag:"Strategic Partnership", tagAr:"شراكة استراتيجية", name:"Gold", nameAr:"الباقة الذهبية",
-   feats:["Multi-channel support (30m response) + 1:1 sessions","In-market Success Manager: 24h response, unlimited training & strategy","Dedicated tech specialist, unlimited configs & reports","Unlimited QA, webinars & new feature implementation included","Product roadmap & feature insights"],
-   featsAr:["دعم متعدد القنوات (استجابة خلال 30 دقيقة) + جلسات فردية","مدير نجاح داخل السوق: تدريب واستراتيجية بلا حدود","مختص تقني مخصص، إعدادات وتقارير بلا حدود","ضمان جودة وندوات وتفعيل مزايا جديدة بلا حدود","خارطة طريق المنتج ورؤى المزايا"]},
+   feats:["Multi-channel support (30m response) + 1:1 sessions","In-market Success Manager: 24h response, unlimited training & strategy","Dedicated tech specialist, unlimited configurations","Unlimited QA, webinars & new feature implementation included","Product roadmap & feature insights"],
+   featsAr:["دعم متعدد القنوات (استجابة خلال 30 دقيقة) + جلسات فردية","مدير نجاح داخل السوق: تدريب واستراتيجية بلا حدود","مختص تقني مخصص، إعدادات بلا حدود","ضمان جودة وندوات وتفعيل مزايا جديدة بلا حدود","خارطة طريق المنتج ورؤى المزايا"]},
 ];
 const CMP = [
   ["cat","Employee records"],["Employee records",1,1,1],["Asset management",1,1,1],["Letter requests",1,1,1],["Custom fields",1,1,1],["Custom requests",0,1,1],
   ["cat","Self service"],["Employee self service",1,1,1],
   ["cat","Onboarding & offboarding"],["Employee onboarding",1,1,1],["Employee offboarding",1,1,1],
   ["cat","Knowledge Hub (Bayzat AI)"],["Shared spaces",0,0,1],
-  ["cat","Payroll"],["Payroll management",1,1,1],["Employee loans",1,1,1],["Air ticket requests",1,1,1],["Employee expenses",1,1,1],["Custom SIF",0,1,1],["Accounting integrations",0,0,1],
+  ["cat","Payroll"],["Payroll management",1,1,1],["GOSI integration",1,1,1],["Employee loans",1,1,1],["Air ticket requests",1,1,1],["Employee expenses",1,1,1],["Custom SIF",0,1,1],["Accounting integrations",0,0,1],
   ["cat","Time off & attendance"],["Time off",1,1,1],["Attendance",1,1,1],["Attendance regularisation",1,1,1],["Shift scheduler",1,1,1],["Kiosk mode",1,1,1],["Biometric integration",1,1,1],["Time sheets",1,1,1],
   ["cat","Performance"],["180° performance",0,1,1],["360° performance",0,1,1],
   ["cat","Engagement & wellness"],["Announcements",1,1,1],["News feed",1,1,1],["Company survey",0,0,1],["Engagement",0,0,1],["Perks",0,1,1],["Mental health",0,1,1],
@@ -534,7 +535,7 @@ const FEAT_AR = {
   "Asset management":"إدارة العهد","Letter requests":"طلبات الخطابات","Custom fields":"الحقول المخصصة",
   "Custom requests":"الطلبات المخصصة","Employee self service":"الخدمة الذاتية للموظفين","Task management":"إدارة المهام",
   "Basic workflows":"مسارات العمل الأساسية","Advanced workflows":"مسارات العمل المتقدمة","Shared spaces":"المساحات المشتركة",
-  "Payroll management":"إدارة مسير الرواتب","Employee loans":"سلف الموظفين","Air ticket requests":"طلبات تذاكر السفر",
+  "Payroll management":"إدارة مسير الرواتب","GOSI integration":"التكامل مع التأمينات الاجتماعية","Employee loans":"سلف الموظفين","Air ticket requests":"طلبات تذاكر السفر",
   "Employee expenses":"مصروفات الموظفين","Custom SIF":"ملف SIF مخصص","Time off":"الإجازات","Attendance":"الحضور والانصراف",
   "Shift scheduler":"جدولة المناوبات","Kiosk mode":"وضع Kiosk","Biometric integration":"التكامل مع أجهزة البصمة",
   "Time sheets":"سجلات الدوام","180° performance":"تقييم الأداء 180°","360° performance":"تقييم الأداء 360°",
@@ -582,6 +583,7 @@ const UI = {
     pkgsTitle:'<em>HRMS</em> — service & support packages', pkgsSub:"Support that scales with you — priced for your team size, billed yearly.",
     atsBundlesTitle:'<em>ATS</em> — choose your bundle', atsBundlesSub:"Driven by headcount, hiring target and workforce mix. All prices in SAR/year, excluding VAT.",
     atsCmpSummary:"Compare every ATS feature",
+    atsPayg:"<b>Beyond the included allowance, AI is pay-as-you-go:</b> SAR 2,000 per 10,000 CVs scored (SAR 0.20 per candidate) &nbsp;·&nbsp; SAR 1,600 per 100 hours of AI notetaking (SAR 16 per hour).",
     atsPkgsTitle:'<em>ATS</em> — onboarding & success packages', atsPkgsSub:"Bronze is included. Silver and Gold are billed yearly; multi-year discounts apply.",
     studioTitle:'<em>Bayzat Studio</em> — your HR, your rules',
     studioSub:"Optional add-on for Premium and Enterprise. Priced from your Enterprise rate for the same headcount.",
@@ -607,7 +609,7 @@ const UI = {
     lblImplDisc:"Implementation discount (%)",
     implNote:(g,net)=>`This team size: ${g}${g!==net?` → ${net}`:""} on a 1-year deal · 2 years −50% · 3 years free`,
     implRow:"Implementation (one-time)", implWaived:"Waived",
-    headHrms:"HRMS", headAts:"ATS", saveBtn:"Save", resetBtn:"Reset to defaults (HRMS 0/5/10 · ATS 0/10/20)",
+    headHrms:"HRMS", headAts:"ATS", saveBtn:"Save", resetBtn:"Reset to defaults (HRMS 0/15/25 · ATS 0/15/25 · implementation 0)",
     yearsLbl:y=>y+" year"+(y>1?"s":""), mostPopular:"Most popular", suggested:"Suggested for your team",
     selected:"Selected", choose:"Choose plan", none:"None", perYr:" /year", perUser:" /employee/month",
     flatFee:"flat fee for your team size", subPrice:(a,n)=>`${a} /year for ${n} employees`,
@@ -633,6 +635,7 @@ const UI = {
     pkgsTitle:'<em>الموارد البشرية</em> — باقات الدعم والخدمات', pkgsSub:"دعم يواكب نمو فريقك — السعر حسب حجم منشأتك، ويُدفع سنويًا.",
     atsBundlesTitle:'<em>التوظيف</em> — اختر باقتك', atsBundlesSub:"السعر يعتمد على عدد الموظفين وعدد التوظيفات المستهدفة وتركيبة القوى العاملة. جميع الأسعار بالريال سنويًا، غير شاملة الضريبة.",
     atsCmpSummary:"قارن جميع مميزات نظام التوظيف",
+    atsPayg:"<b>بعد الحد المشمول، الذكاء الاصطناعي يُحتسب حسب الاستخدام:</b> 2,000 ريال لكل 10,000 سيرة ذاتية (0.20 ريال للمرشح) &nbsp;·&nbsp; 1,600 ريال لكل 100 ساعة تدوين ذكي (16 ريال للساعة).",
     atsPkgsTitle:'<em>التوظيف</em> — باقات التهيئة والتدريب', atsPkgsSub:"الباقة البرونزية مشمولة. الفضية والذهبية تُدفعان سنويًا وتنطبق عليهما خصومات العقود الطويلة.",
     studioTitle:'<em>بيزات ستديو</em> — نظامك بقواعدك',
     studioSub:"إضافة اختيارية مع الشاملة والاحترافية. سعرها محسوب من سعر الاحترافية لنفس عدد الموظفين.",
@@ -658,7 +661,7 @@ const UI = {
     lblImplDisc:"خصم رسوم التنفيذ (%)",
     implNote:(g,net)=>`لهذا الحجم: ${g}${g!==net?` ← ${net}`:""} لعقد سنة · سنتين −50% · ثلاث سنوات مجانًا`,
     implRow:"رسوم التنفيذ (لمرة واحدة)", implWaived:"معفاة",
-    headHrms:"الموارد البشرية", headAts:"التوظيف", saveBtn:"حفظ", resetBtn:"إعادة الضبط الافتراضي (الموارد البشرية 0/5/10 · التوظيف 0/10/20)",
+    headHrms:"الموارد البشرية", headAts:"التوظيف", saveBtn:"حفظ", resetBtn:"إعادة الضبط الافتراضي (الموارد البشرية 0/15/25 · التوظيف 0/15/25 · التنفيذ 0)",
     yearsLbl:y=>y===1?"سنة":y===2?"سنتين":y+" سنوات", mostPopular:"الأكثر اختيارًا", suggested:"مقترحة لفريقك",
     selected:"مختارة", choose:"اختر الباقة", none:"بدون", perYr:" /سنة", perUser:" /موظف/شهر",
     flatFee:"سعر ثابت لحجم فريقك", subPrice:(a,n)=>`${a} /سنة لفريق من ${n} موظف`,
@@ -694,7 +697,7 @@ const PAY_TERMS = [
 ];
 
 /* ================= STATE ================= */
-const DEFAULT_DISC = {hrms:[0,5,10], ats:[0,10,20]};
+const DEFAULT_DISC = {hrms:[0,15,25], ats:[0,15,25]};   // 1yr · 2yr · 3yr
 const DEFAULT_IMPL_DISC = 0;                       // implementation discount is controlled on its own
 let disc = loadDisc();
 let implDisc = loadImplDisc();
@@ -708,8 +711,8 @@ let propYears = [false, false, true];   // 1yr, 2yr, 3yr
 let propLang = "en";
 let clientLogo = null;                   // {data, w, h}
 let uiLang = loadLang();
-function loadDisc(){ try{const s=localStorage.getItem("bz_ksa_disc_v2"); if(s){const d=JSON.parse(s); if(d&&d.hrms&&d.ats) return d;}}catch(e){} return JSON.parse(JSON.stringify(DEFAULT_DISC)); }
-function persistDisc(){ try{localStorage.setItem("bz_ksa_disc_v2", JSON.stringify(disc));}catch(e){} }
+function loadDisc(){ try{const s=localStorage.getItem("bz_ksa_disc_v3"); if(s){const d=JSON.parse(s); if(d&&d.hrms&&d.ats) return d;}}catch(e){} return JSON.parse(JSON.stringify(DEFAULT_DISC)); }
+function persistDisc(){ try{localStorage.setItem("bz_ksa_disc_v3", JSON.stringify(disc));}catch(e){} }
 function loadImplDisc(){ try{const s=localStorage.getItem("bz_ksa_impldisc"); if(s!==null){const v=parseFloat(s); if(isFinite(v)) return Math.min(100,Math.max(0,v));}}catch(e){} return DEFAULT_IMPL_DISC; }
 function persistImplDisc(){ try{localStorage.setItem("bz_ksa_impldisc", String(implDisc));}catch(e){} }
 /* Implementation is waived down automatically as the contract lengthens:
@@ -962,6 +965,7 @@ function renderAtsBundles(pct, rec, n, hires){
       <ul class="feats">${feats.map(f=>`<li>${f}</li>`).join("")}</ul>
     </div>`;
   }).join("");
+  document.getElementById("atsPaygNote").innerHTML = d.atsPayg;
   document.getElementById("atsCmpTable").innerHTML =
     `<tr><th></th><th>Recruiter Pro</th><th>Teams</th><th>Teams Pro</th></tr>` +
     ATS_CMP.map(r=> r[0]==="cat"
@@ -1101,6 +1105,8 @@ const T = {
     studioTitle:t=>`Bayzat Studio — ${t}`,
     includedFree:"Included",
     implRow:"Implementation & Setup", implDesc:"One-time fee, first year only", oneTime:"one-time", implWaived:"Waived",
+    atsPaygCv:"AI CV scoring beyond the included allowance: SAR 2,000 per 10,000 CVs (SAR 0.20 per candidate).",
+    atsPaygNote:"AI notetaking beyond the included allowance: SAR 1,600 per 100 hours (SAR 16 per hour).",
     implUpfront:"Payment split applies to the annual subscription only; implementation is paid upfront.",
     seNote:"Custom builds are scoped with Solutions Engineering and quoted separately.",
     appFee:f=>`Bayzat apps carry a maintenance fee of SAR ${f} per app per month.`,
@@ -1121,6 +1127,8 @@ const T = {
     studioTitle:t=>`بيزات ستديو — ${t}`,
     includedFree:"مشمولة",
     implRow:"رسوم التنفيذ والتهيئة", implDesc:"رسوم لمرة واحدة، في السنة الأولى فقط", oneTime:"لمرة واحدة", implWaived:"معفاة",
+    atsPaygCv:"فرز السير الذاتية بالذكاء الاصطناعي بعد الحد المشمول: 2,000 ريال لكل 10,000 سيرة (0.20 ريال للمرشح).",
+    atsPaygNote:"التدوين الذكي بعد الحد المشمول: 1,600 ريال لكل 100 ساعة (16 ريال للساعة).",
     implUpfront:"التقسيط ينطبق على الاشتراك السنوي فقط، ورسوم التنفيذ تُدفع مقدمًا.",
     seNote:"التطوير المخصص يُحدَّد نطاقه مع فريق هندسة الحلول ويُسعّر بشكل منفصل.",
     appFee:f=>`تطبيقات بيزات عليها رسوم صيانة ${f} ريال لكل تطبيق شهريًا.`,
@@ -1301,16 +1309,16 @@ function generateProposal(){
     const notes = [L.vat, L.payTerms(AR ? PAY_TERMS[payIdx].ar : PAY_TERMS[payIdx].en)];
     if(implNet>0 && payIdx>0) notes.push(L.implUpfront);    // split applies to subscription only
     if(validISO)           notes.push(L.validUntil(fmtValidDate(validISO, AR)));
+    if(products.ats){ notes.push(L.atsPaygCv); notes.push(L.atsPaygNote); }
     if(studio){
       notes.push(L.appFee(STUDIO_APP_FEE));
       if(studio.id === 1) notes.push(L.seNote);
     }
     // keep the whole list clear of the contact block, tightening the leading if it is long
-    const NOTES_END = 9.74;
-    const lead = 0.28;
-    const notesY = Math.min(yPos, NOTES_END - notes.length*lead);   // bottom-anchored
+    const NOTES_END = 9.78;
+    const lead = Math.min(0.28, Math.max(0.21, (NOTES_END - yPos) / notes.length));
     notes.forEach((t,i)=>{
-      sl.addText("●  " + t, {x:0.7, y:notesY + i*lead, w:W-1.4, h:lead, fontFace:FONT,
+      sl.addText("●  " + t, {x:0.7, y:yPos + i*lead, w:W-1.4, h:lead, fontFace:FONT,
         fontSize:9.5, color:C.g3, valign:"middle", margin:0, ...ax});
     });
 
