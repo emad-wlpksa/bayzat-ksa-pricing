@@ -400,17 +400,27 @@ const BANDS = [
   {label:"1001+",  min:1001, max:Infinity},
 ];
 /* flat = annual SAR for bands 1-10 and 11-20 · pupm = SAR per employee per month for bands 21-50 and up */
+/* Rates include the Nov-2026 update: 1 SAR/employee/month off the 51-100,
+   101-300 and 301-500 bands on every bundle. */
 const BUNDLE_RATES = {
-  essential:  {flat:[3500,5500], pupm:[14,13,12,11,9,8,7]},
-  premium:    {flat:[4500,6500], pupm:[17,16,14,13,11,10,9]},
-  enterprise: {flat:[5000,7000], pupm:[20,19,16,15,12,11,10]},
+  essential:  {flat:[3500,5500], pupm:[14,12,11,10,9,8,7]},
+  premium:    {flat:[4500,6500], pupm:[17,15,13,12,11,10,9]},
+  enterprise: {flat:[5000,7000], pupm:[20,18,15,14,12,11,10]},
 };
-/* One-time HRMS implementation fee, by employee band (indexes match BANDS). */
-const IMPL_FEES = [1000, 2000, 3000, 5000, 5000, 10000, 10000, 20000, 20000];
-const PKG_PRICES = [
-  [700, 1100, null],[600, 1300, 2100],[1100, 1800, 2500],[3300, 5500, 8600],[4400, 9000, 13400],
-  [6500, 15800, 22500],[7500, 17200, 24400],[7800, 17700, 25200],[7700, 17600, 25000],
+/* One-time HRMS implementation fee, by employee band (indexes match BANDS).
+   Nov-2026 update: waived entirely from 1 to 100 employees. */
+const IMPL_FEES = [0, 0, 0, 0, 5000, 10000, 10000, 20000, 20000];
+/* Service packages, Nov-2026 update.
+   The fee is a percentage of the ENTERPRISE annual fee for the customer's band
+   (Bronze 10%, Silver 20%, Gold 30%), before any contract discount, capped at
+   the figures in PKG_CAPS so no customer pays more than the old flat fee.
+   Caps from 51 employees up already carry the 20% reduction. */
+const PKG_PCT = [0.10, 0.20, 0.30];
+const PKG_CAPS = [
+  [700, 1100, null],[600, 1300, 2100],[1100, 1800, 2500],[2640, 4400, 6880],[3520, 7200, 10720],
+  [5200, 12640, 18000],[6000, 13760, 19520],[6240, 14160, 20160],[6160, 14080, 20000],
 ];
+const PKG_PRICES = PKG_CAPS;   /* availability lookups (null = not offered) */
 const BUNDLES = [
   {id:"essential", tag:"Core HR", tagAr:"الأساسيات", name:"Essential", nameAr:"الاساسية",
    feats:["Employee self service","Time off & attendance (incl. regularisation)","Payroll & WPS","GOSI integration","Employee onboarding & offboarding","Work & loan requests","AI reports"],
@@ -735,7 +745,12 @@ const fmtN = n => Math.round(n).toLocaleString("en-US");
 function bandIndex(n){ for(let i=0;i<BANDS.length;i++) if(n>=BANDS[i].min && n<=BANDS[i].max) return i; return BANDS.length-1; }
 function bundleAnnual(id, n){ const b=BUNDLE_RATES[id], i=bandIndex(n); return i<2 ? b.flat[i] : b.pupm[i-2]*n*12; }
 function bundlePUPM(id, n){ const i=bandIndex(n); return i<2 ? null : BUNDLE_RATES[id].pupm[i-2]; }
-function pkgAnnual(pkgIdx, n){ return PKG_PRICES[bandIndex(n)][pkgIdx]; }
+function pkgAnnual(pkgIdx, n){
+  const cap = PKG_CAPS[bandIndex(n)][pkgIdx];
+  if(cap === null) return null;                                   // not offered in this band
+  const pct = Math.round(bundleAnnual("enterprise", n) * PKG_PCT[pkgIdx] / 100) * 100;
+  return Math.min(pct, cap);
+}
 function wcTier(pct){ return pct>=75 ? 0 : (pct>=36 ? 1 : 2); }
 function atsAnnual(id, pct, e, hires){
   const floor = atsFloor(e);
@@ -915,7 +930,7 @@ function renderBundles(n){
 function renderPkgs(n, bi){
   const d = S();
   document.getElementById("pkgCards").innerHTML = PKGS.map(p=>{
-    const price = PKG_PRICES[bi][p.id];
+    const price = pkgAnnual(p.id, n);
     const avail = price!==null;
     const feats = uiLang==="ar" ? p.featsAr : p.feats;
     return `<div class="card ${selPkg===p.id?"selected":""}">
