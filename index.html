@@ -16,6 +16,27 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body,button,input,select,textarea{font-family:'Cairo',Arial,Helvetica,sans-serif}
   body{background:var(--bg);color:#fff;line-height:1.3}
+
+  /* ---- access gate ---- */
+  #gate{display:none}
+  body.locked .wrap,body.locked .modal-bg{display:none!important}
+  body.locked #gate{display:flex}
+  #gate{position:fixed;inset:0;z-index:9999;background:var(--purple);
+        align-items:center;justify-content:center;padding:24px}
+  .gate-box{width:100%;max-width:400px;text-align:center}
+  .gate-box svg{height:34px;width:auto;margin:0 auto 34px;display:block}
+  .gate-box h2{font-size:20px;color:#fff;margin-bottom:10px;letter-spacing:.5px}
+  .gate-box p{font-size:13.5px;color:rgba(255,255,255,.82);margin-bottom:26px;line-height:1.5}
+  .gate-box input{width:100%;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.35);
+        border-radius:10px;padding:14px 16px;color:#fff;font-size:15px;text-align:center;letter-spacing:1px}
+  .gate-box input:focus{outline:none;border-color:#fff;background:rgba(0,0,0,.3)}
+  .gate-box input::placeholder{color:rgba(255,255,255,.5);letter-spacing:0}
+  .gate-box button{width:100%;margin-top:12px;background:#fff;color:var(--purple);border:none;
+        border-radius:10px;padding:14px;font-size:14px;font-weight:bold;cursor:pointer;letter-spacing:.5px}
+  .gate-box button:hover{background:var(--stone)}
+  .gate-err{min-height:20px;margin-top:14px;font-size:13px;color:#fff;font-weight:bold;opacity:0;transition:opacity .2s}
+  .gate-err.show{opacity:1}
+  .gate-foot{margin-top:30px;font-size:11.5px;color:rgba(255,255,255,.6)}
   h1,h2,h3,.hd{font-weight:bold;text-transform:uppercase;letter-spacing:0}
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
@@ -159,7 +180,31 @@
   @media(max-width:900px){.grid3,.years,.grid2,.prop-grid{grid-template-columns:1fr}.hero h1{font-size:36px}.chips .lbl{width:100%}}
 </style>
 </head>
-<body>
+<body class="locked">
+
+<div id="gate">
+  <div class="gate-box">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 311.25 68.249996" fill="white" style="height:34px;width:auto;display:block" aria-label="Bayzat">
+        <path d="M 21.3125 0.742188 L 1.320312 0.742188 L 1.320312 67.472656 L 50.261719 67.472656 L 50.261719 55.765625 L 13.101562 55.765625 L 13.101562 41.542969 L 50.269531 41.527344 L 50.269531 30.335938 L 40.75 30.335938 L 40.792969 30.253906 L 13.09375 30.253906 L 13.09375 12.34375 L 41.089844 12.34375 L 40.386719 10.800781 L 36.933594 6.679688 L 32.449219 3.5 L 27.175781 1.464844 Z"/>
+        <path d="M 50.261719 41.527344 L 38.484375 41.527344 L 38.484375 55.765625 L 50.261719 55.765625 Z"/>
+        <path d="M 41.089844 12.34375 L 21.941406 12.34375 L 25.566406 13.035156 L 28.472656 14.929688 L 30.402344 17.730469 L 31.105469 21.164062 L 30.402344 24.636719 L 28.472656 27.535156 L 25.566406 29.515625 L 21.941406 30.253906 L 40.800781 30.253906 L 41.878906 28.308594 L 42.714844 26.097656 L 43.234375 23.714844 L 43.410156 21.164062 L 42.621094 15.6875 L 41.089844 12.335938 Z"/>
+        <path d="M 79.871094 0 L 73.96875 0.796875 L 68.664062 3.039062 L 64.160156 6.527344 L 60.675781 11.035156 L 58.4375 16.347656 L 57.640625 22.257812 L 57.640625 67.484375 L 69.496094 67.484375 L 69.496094 41.539062 L 102.113281 41.539062 L 102.113281 30.339844 L 69.496094 30.339844 L 69.496094 22.257812 L 70.316406 18.21875 L 72.542969 14.917969 L 75.839844 12.6875 L 79.871094 11.871094 L 99.425781 11.871094 L 99.074219 11.035156 L 95.59375 6.527344 L 91.089844 3.046875 L 85.773438 0.796875 Z"/>
+        <path d="M 102.113281 41.539062 L 90.253906 41.539062 L 90.253906 67.484375 L 102.113281 67.484375 Z"/>
+        <path d="M 99.425781 11.871094 L 79.871094 11.871094 L 83.914062 12.6875 L 87.210938 14.917969 L 89.4375 18.21875 L 90.253906 22.257812 L 90.253906 30.339844 L 102.113281 30.339844 L 102.113281 22.257812 L 101.316406 16.347656 Z"/>
+        <path d="M 158.203125 0.742188 L 137.507812 0.742188 L 137.507812 4.398438 L 136.9375 11.761719 L 135.316406 17.929688 L 132.773438 22.878906 L 129.449219 26.574219 L 125.484375 28.988281 L 120.988281 30.085938 L 120.988281 0.746094 L 109.1875 0.746094 L 109.1875 41.542969 L 112.855469 41.542969 L 118.523438 41.285156 L 123.789062 40.464844 L 128.625 39.046875 L 132.988281 37 L 136.839844 34.273438 L 140.144531 30.835938 L 142.871094 26.648438 L 144.972656 21.664062 L 146.417969 15.851562 L 146.417969 24.785156 L 145.863281 32.027344 L 144.292969 38.117188 L 141.855469 43.140625 L 138.691406 47.183594 L 134.945312 50.351562 L 130.75 52.738281 L 126.261719 54.429688 L 121.617188 55.523438 L 116.964844 56.113281 L 112.449219 56.285156 L 109.1875 56.285156 L 109.1875 67.484375 L 114.382812 67.484375 L 119.292969 67.304688 L 124.1875 66.738281 L 129.003906 65.746094 L 133.671875 64.292969 L 138.121094 62.339844 L 142.292969 59.851562 L 146.121094 56.789062 L 149.542969 53.117188 L 152.484375 48.792969 L 154.890625 43.789062 L 156.691406 38.058594 L 157.816406 31.566406 L 158.210938 24.28125 L 158.210938 0.742188 Z"/>
+        <path d="M 207.832031 55.769531 L 176.757812 55.769531 L 207.09375 11.613281 L 207.097656 0.742188 L 165.425781 0.742188 L 165.425781 12.417969 L 192.65625 12.417969 L 162.351562 56.542969 L 162.351562 67.445312 L 207.832031 67.445312 Z"/>
+        <path d="M 259.636719 22.234375 L 258.84375 16.332031 L 256.953125 11.859375 L 253.125 6.519531 L 248.625 3.046875 L 247.792969 2.695312 L 247.792969 30.308594 L 227.054688 30.308594 L 227.054688 22.234375 L 227.871094 18.199219 L 230.09375 14.902344 L 233.390625 12.675781 L 237.417969 11.859375 L 241.457031 12.675781 L 244.75 14.902344 L 246.972656 18.199219 L 247.792969 22.234375 L 247.792969 2.6875 L 243.316406 0.796875 L 237.417969 0 L 231.523438 0.796875 L 226.222656 3.039062 L 221.722656 6.519531 L 218.242188 11.023438 L 216.003906 16.332031 L 215.207031 22.234375 L 215.207031 67.414062 L 227.054688 67.414062 L 227.054688 41.496094 L 247.792969 41.496094 L 247.792969 67.414062 L 259.636719 67.414062 Z"/>
+        <path d="M 308.664062 0.753906 L 263.808594 0.753906 L 263.808594 12.363281 L 280.316406 12.363281 L 280.316406 67.441406 L 292.15625 67.441406 L 292.15625 12.363281 L 308.664062 12.363281 Z"/>
+      </svg>
+    <h2 id="gateTitle">Restricted access</h2>
+    <p id="gateSub">This pricing tool is for the Bayzat sales team. Enter the access code to continue — you will only be asked once on this browser.</p>
+    <input type="password" id="gatePw" placeholder="Access code" autocomplete="off" autofocus>
+    <button id="gateBtn" onclick="gateSubmit()">Unlock</button>
+    <div class="gate-err" id="gateErr"></div>
+    <div class="gate-foot" id="gateFoot">Bayzat KSA — internal use only</div>
+  </div>
+</div>
+
 
 <div class="wrap">
   <header>
@@ -1489,14 +1534,124 @@ function resetSettings(){
   persistDisc(); persistImplDisc(); closeSettings(); render();
 }
 
+
+/* ================= ACCESS GATE =================
+   A one-time access code per browser. Unlocking stores a token in localStorage,
+   so the code is asked for once and not again on that browser. Clearing site
+   data, a different browser, or a private window asks again.
+
+   This is a deterrent, not security: the page is a static file, so anyone
+   determined can read the code out of it or skip the gate in devtools. It stops
+   the link being forwarded and casually opened, which is what it is for.
+
+   TO CHANGE THE CODE: open the page, press F12, and run this in the console:
+       bzSha256("your new code")
+   Paste the result into GATE_HASH below. Bump GATE_VERSION at the same time to
+   force everyone to re-enter it; leave GATE_VERSION alone to let already
+   unlocked browsers stay unlocked.                                          */
+const GATE_HASH    = "401cfcaab534f8cc2c35bf2fb9626a2cededb6b9e0bd973d7da3147cfbe8d50d";
+const GATE_VERSION = 1;
+const GATE_KEY     = "bz_ksa_gate";
+
+/* SHA-256, pure JS so it works over https, file:// and anywhere else. */
+function bzSha256(str){
+  function rr(n,x){return (x>>>n)|(x<<(32-n));}
+  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+         0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+         0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+         0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+         0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+         0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+         0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+         0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  var u=unescape(encodeURIComponent(str)), b=[], i;
+  for(i=0;i<u.length;i++) b.push(u.charCodeAt(i));
+  var L=b.length*8; b.push(0x80);
+  while((b.length%64)!==56) b.push(0);
+  for(i=0;i<4;i++) b.push(0);
+  b.push((L>>>24)&255,(L>>>16)&255,(L>>>8)&255,L&255);
+  var w=new Array(64);
+  for(i=0;i<b.length;i+=64){
+    var j;
+    for(j=0;j<16;j++) w[j]=(b[i+4*j]<<24)|(b[i+4*j+1]<<16)|(b[i+4*j+2]<<8)|b[i+4*j+3];
+    for(j=16;j<64;j++){
+      var s0=rr(7,w[j-15])^rr(18,w[j-15])^(w[j-15]>>>3);
+      var s1=rr(17,w[j-2])^rr(19,w[j-2])^(w[j-2]>>>10);
+      w[j]=(w[j-16]+s0+w[j-7]+s1)|0;
+    }
+    var a=H[0],bb=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+    for(j=0;j<64;j++){
+      var S1=rr(6,e)^rr(11,e)^rr(25,e), ch=(e&f)^((~e)&g);
+      var t1=(h+S1+ch+K[j]+w[j])|0;
+      var S0=rr(2,a)^rr(13,a)^rr(22,a), mj=(a&bb)^(a&c)^(bb&c);
+      var t2=(S0+mj)|0;
+      h=g;g=f;f=e;e=(d+t1)|0;d=c;c=bb;bb=a;a=(t1+t2)|0;
+    }
+    H[0]=(H[0]+a)|0;H[1]=(H[1]+bb)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;
+    H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;
+  }
+  return H.map(function(x){return ("00000000"+(x>>>0).toString(16)).slice(-8);}).join("");
+}
+
+function gateToken(){ return bzSha256(GATE_HASH + "|" + GATE_VERSION); }
+function gateUnlocked(){
+  try{ return localStorage.getItem(GATE_KEY) === gateToken(); }catch(e){ return false; }
+}
+function gateOpen(){
+  document.body.classList.remove("locked");
+  const g = document.getElementById("gate");
+  if(g) g.style.display = "none";
+}
+function gateSubmit(){
+  const inp = document.getElementById("gatePw");
+  const err = document.getElementById("gateErr");
+  const val = (inp.value||"").trim();
+  if(bzSha256(val) === GATE_HASH){
+    try{ localStorage.setItem(GATE_KEY, gateToken()); }catch(e){}   /* private mode: unlock for this tab only */
+    gateOpen();
+    bootPage();
+  }else{
+    err.textContent = S_GATE().wrong;
+    err.classList.add("show");
+    inp.value = ""; inp.focus();
+  }
+}
+/* the gate shows before the language machinery is ready, so it carries its own strings */
+function S_GATE(){
+  const ar = (function(){ try{ return localStorage.getItem("bz_ksa_lang")==="ar"; }catch(e){ return false; } })();
+  return ar
+    ? {title:"وصول مقيد", sub:"هذه الأداة مخصصة لفريق مبيعات بيزات. أدخل رمز الدخول للمتابعة — بيُطلب منك مرة وحدة بس على هذا المتصفح.",
+       ph:"رمز الدخول", btn:"دخول", wrong:"رمز غير صحيح. حاول مرة ثانية.", foot:"بيزات السعودية — للاستخدام الداخلي"}
+    : {title:"Restricted access", sub:"This pricing tool is for the Bayzat sales team. Enter the access code to continue — you will only be asked once on this browser.",
+       ph:"Access code", btn:"Unlock", wrong:"Wrong code. Try again.", foot:"Bayzat KSA — internal use only"};
+}
+function gateInit(){
+  const d = S_GATE();
+  const set = (id,v,attr) => { const el=document.getElementById(id); if(el){ attr ? el.setAttribute(attr,v) : el.textContent=v; } };
+  set("gateTitle",d.title); set("gateSub",d.sub); set("gateBtn",d.btn); set("gateFoot",d.foot);
+  set("gatePw",d.ph,"placeholder");
+  const inp = document.getElementById("gatePw");
+  if(inp){
+    inp.addEventListener("keydown", e => { if(e.key==="Enter") gateSubmit(); });
+    setTimeout(()=>inp.focus(), 60);
+  }
+}
+
 /* ================= INIT ================= */
-(function init(){
+function bootPage(){
   const dt = new Date(); dt.setDate(dt.getDate()+30);
   const pad = v => String(v).padStart(2,"0");
   document.getElementById("validUntil").value = dt.getFullYear()+"-"+pad(dt.getMonth()+1)+"-"+pad(dt.getDate());
   setLang(uiLang);   // applies static text, fills selects, renders
   loadTeam();        // may re-fill rep select when the sheet loads
+}
+(function init(){
+  gateInit();
+  if(gateUnlocked()){ gateOpen(); bootPage(); }
+  /* otherwise the gate stays up; gateSubmit() boots the page on success */
 })();
+
 </script>
 </body>
 </html>
